@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cooperação para o Desenvolvimento — Fases e Conjunturas</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/vis-timeline/7.7.2/vis-timeline-graph2d.min.css" rel="stylesheet">
+
+<style>
+/* ================================================
+   DESIGN TOKENS
+   ================================================ */
+:root {
+  --ink:      #1a1814;
+  --paper:    #f5f0e8;
+  --cream:    #ede7d5;
+  --rule:     #b8a98a;
+  --muted:    #6b6050;
+  --a1:       #8b3a2a;   /* vermelho terracota  – fase 4 */
+  --a2:       #2a5c7a;   /* azul petróleo       – fase 1 */
+  --a3:       #3d6b3a;   /* verde sálvia        – fase 2 */
+  --a4:       #7a4a1a;   /* âmbar               – fase 3 */
+  --a5:       #4a2a7a;   /* violeta             – fase 5 */
+  --a6:       #2a6b5c;   /* verde-azulado       – fase 6 */
+  --nav-h:    56px;
+}
+
+/* ================================================
+   RESET + BASE
+   ================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ================================================
+   FLOATING NAV
+   ================================================ */
+#floatnav {
+  position: fixed;
+  top: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  display: flex;
+  background: var(--ink);
+  border-radius: 999px;
+  padding: 4px;
+  gap: 2px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.22);
+}
+
+.nav-btn {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: none;
+  background: transparent;
+  color: rgba(245,240,232,0.55);
+  padding: 0.45rem 1.3rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s;
+  white-space: nowrap;
+}
+
+.nav-btn.active {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.nav-btn:hover:not(.active) {
+  color: rgba(245,240,232,0.85);
+}
+
+/* ================================================
+   VIEWS
+   ================================================ */
+.view {
+  display: none;
+  padding: calc(var(--nav-h) + 2.5rem) 2rem 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: fadeIn 0.3s ease;
+}
+
+.view.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================================
+   HEADER (shared)
+   ================================================ */
+.page-header {
+  text-align: center;
+  border-top: 3px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+  padding: 1.8rem 0 1.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.header-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.page-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.1rem;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.header-meta {
+  margin-top: 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  font-style: italic;
+}
+
+hr.divider {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 0.4rem 0 2rem;
+}
+
+/* ================================================
+   TABLE VIEW
+   ================================================ */
+.col-headers {
+  display: grid;
+  grid-template-columns: 90px 145px 1fr 1fr 1fr 1fr;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0;
+}
+
+.col-h {
+  font-size: 0.64rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  padding: 0 0.6rem;
+}
+.col-h:first-child { padding-left: 0; }
+
+.phase-row {
+  display: grid;
+  grid-template-columns: 90px 145px 1fr 1fr 1fr 1fr;
+  border-bottom: 1px solid var(--cream);
+  padding: 1.3rem 0;
+  transition: background 0.18s;
+}
+.phase-row:hover { background: rgba(184,169,138,0.07); }
+.phase-row:last-of-type { border-bottom: 2px solid var(--ink); }
+
+.cell {
+  padding: 0 0.6rem;
+  font-size: 0.79rem;
+  line-height: 1.55;
+  font-weight: 300;
+}
+.cell:first-child { padding-left: 0; }
+
+/* period */
+.cell-period {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+.period-year { display: block; font-size: 1.05rem; }
+.period-label {
+  display: block;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-top: 0.2rem;
+}
+
+/* paradigm */
+.paradigm-tag {
+  display: inline-block;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.3;
+  border-left: 3px solid;
+  padding-left: 0.55rem;
+}
+.paradigm-sub {
+  display: block;
+  font-family: 'Source Sans 3', sans-serif;
+  font-style: normal;
+  font-size: 0.67rem;
+  font-weight: 300;
+  color: var(--muted);
+  margin-top: 0.2rem;
+  padding-left: 0;
+  border: none;
+}
+
+/* conjuncture */
+.cj { display: flex; align-items: baseline; gap: 0.3rem; margin-bottom: 0.3rem; }
+.cj-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 0.32rem; }
+.cj-yr  { font-weight: 600; font-size: 0.7rem; }
+
+/* list */
+ul.cl { list-style: none; }
+ul.cl li {
+  font-size: 0.77rem;
+  line-height: 1.5;
+  padding-left: 0.85rem;
+  position: relative;
+  margin-bottom: 0.22rem;
+  font-weight: 300;
+}
+ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rule); }
+
+/* critique */
+.crit {
+  font-size: 0.76rem;
+  line-height: 1.45;
+  margin-bottom: 0.28rem;
+  font-style: italic;
+  font-weight: 300;
+}
+.crit::before { content: '↯ '; font-style: normal; }
+
+/* phase colour themes */
+.p1 .cell-period,.p1 .period-label,.p1 .crit { color: var(--a2); }
+.p1 .paradigm-tag { border-color: var(--a2); color: var(--a2); }
+.p1 .cj-dot { background: var(--a2); }
+
+.p2 .cell-period,.p2 .period-label,.p2 .crit { color: var(--a3); }
+.p2 .paradigm-tag { border-color: var(--a3); color: var(--a3); }
+.p2 .cj-dot { background: var(--a3); }
+
+.p3 .cell-period,.p3 .period-label,.p3 .crit { color: var(--a4); }
+.p3 .paradigm-tag { border-color: var(--a4); color: var(--a4); }
+.p3 .cj-dot { background: var(--a4); }
+
+.p4 .cell-period,.p4 .period-label,.p4 .crit { color: var(--a1); }
+.p4 .paradigm-tag { border-color: var(--a1); color: var(--a1); }
+.p4 .cj-dot { background: var(--a1); }
+
+.p5 .cell-period,.p5 .period-label,.p5 .crit { color: var(--a5); }
+.p5 .paradigm-tag { border-color: var(--a5); color: var(--a5); }
+.p5 .cj-dot { background: var(--a5); }
+
+.p6 .cell-period,.p6 .period-label,.p6 .crit { color: var(--a6); }
+.p6 .paradigm-tag { border-color: var(--a6); color: var(--a6); }
+.p6 .cj-dot { background: var(--a6); }
+
+/* footer */
+.page-footer {
+  margin-top: 1.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 0.9rem;
+}
+.footer-txt { font-size: 0.68rem; font-weight: 300; color: var(--muted); line-height: 1.6; }
+.footer-txt strong { font-weight: 600; color: var(--ink); }
+.legend { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; }
+.leg-item { font-size: 0.67rem; color: var(--muted); font-weight: 300; display: flex; align-items: center; gap: 0.25rem; }
+
+/* ================================================
+   TIMELINE VIEW
+   ================================================ */
+#tl-wrap { position: relative; }
+
+#timeline {
+  width: 100%;
+  height: 540px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: #faf7f0;
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+/* override vis-timeline styles */
+.vis-timeline {
+  border: none !important;
+  font-family: 'Source Sans 3', sans-serif !important;
+}
+.vis-time-axis .vis-text {
+  font-family: 'Source Sans 3', sans-serif !important;
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  color: var(--muted) !important;
+  letter-spacing: 0.06em !important;
+}
+.vis-item {
+  font-family: 'Source Sans 3', sans-serif !important;
+  font-size: 0.72rem !important;
+  font-weight: 400 !important;
+  border-radius: 3px !important;
+  border-width: 2px !important;
+  cursor: pointer !important;
+}
+.vis-item.vis-selected {
+  filter: brightness(1.12) !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18) !important;
+}
+.vis-item.vis-range .vis-item-content {
+  padding: 3px 8px !important;
+}
+.vis-label {
+  font-family: 'Source Sans 3', sans-serif !important;
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  color: var(--muted) !important;
+  padding: 0 6px !important;
+}
+.vis-panel.vis-background { background: #faf7f0 !important; }
+.vis-panel.vis-center { background: #faf7f0 !important; }
+.vis-grid.vis-vertical { border-color: rgba(184,169,138,0.3) !important; }
+.vis-current-time { background: var(--a1) !important; width: 1px !important; }
+
+/* tooltip */
+#tl-tooltip {
+  position: absolute;
+  max-width: 300px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  font-size: 0.76rem;
+  line-height: 1.55;
+  font-weight: 300;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+}
+#tl-tooltip.show { opacity: 1; }
+#tl-tooltip strong { font-weight: 600; display: block; margin-bottom: 0.25rem; font-size: 0.8rem; }
+#tl-tooltip em { color: rgba(245,240,232,0.6); font-style: normal; font-size: 0.68rem; }
+
+/* legend swatches */
+.tl-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1.2rem;
+  margin-top: 1.2rem;
+  padding: 0.8rem 1rem;
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+.tl-leg-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; font-weight: 300; color: var(--ink); }
+.tl-swatch {
+  width: 14px; height: 14px; border-radius: 2px; flex-shrink: 0;
+  border: 2px solid rgba(0,0,0,0.12);
+}
+.tl-hint {
+  font-size: 0.7rem;
+  font-style: italic;
+  color: var(--muted);
+  margin-top: 0.6rem;
+  font-weight: 300;
+}
+
+/* ================================================
+   RESPONSIVE
+   ================================================ */
+@media (max-width: 900px) {
+  .col-headers, .phase-row {
+    grid-template-columns: 75px 110px 1fr;
+  }
+  .cell:nth-child(n+4) { display: none; }
+  .col-h:nth-child(n+4) { display: none; }
+  .page-header h1 { font-size: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     FLOATING NAV
+     ============================================================ -->
+<nav id="floatnav" role="navigation" aria-label="Alternar visualização">
+  <button class="nav-btn active" onclick="switchView('table')" id="btn-table">
+    ☰&nbsp; Quadro Analítico
+  </button>
+  <button class="nav-btn" onclick="switchView('timeline')" id="btn-timeline">
+    ◈&nbsp; Linha do Tempo
+  </button>
+</nav>
+
+<!-- ============================================================
+     VIEW 1 — QUADRO
+     ============================================================ -->
+<div id="view-table" class="view active">
+  <div class="page-header">
+    <div class="header-eyebrow">Cooperação Internacional para o Desenvolvimento &mdash; Material de Aula</div>
+    <h1>Fases da Cooperação para o Desenvolvimento</h1>
+    <div class="header-meta">Baseado em: Afonso, M. M. "A Evolução da Cooperação para o Desenvolvimento". In: Afonso; Fernandes (orgs.), <em>Introdução à Cooperação para o Desenvolvimento</em>. Lisboa: Fórum DC / OIKOS / IMVF, 2005.</div>
+  </div>
+  <hr class="divider">
+
+  <div class="col-headers">
+    <div class="col-h">Período</div>
+    <div class="col-h">Paradigma Central</div>
+    <div class="col-h">Conjunturas Críticas</div>
+    <div class="col-h">Lógica da Ajuda</div>
+    <div class="col-h">Instrumentos e Atores</div>
+    <div class="col-h">Críticas e Limites</div>
+  </div>
+
+  <!-- FASE 1 -->
+  <div class="phase-row p1">
+    <div class="cell cell-period">
+      <span class="period-year">1945–1960</span>
+      <span class="period-label">Origens</span>
+    </div>
+    <div class="cell">
+      <span class="paradigm-tag">Crescimento via transferência de capital
+        <span class="paradigm-sub">Harrod-Domar; Rostow (take-off)</span>
+      </span>
+    </div>
+    <div class="cell">
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1944</span> — Conferência de Bretton Woods: criação do FMI e BIRD</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1945</span> — Fundação da ONU; início da Guerra Fria</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1948</span> — Plano Marshall: reconstrução europeia como modelo</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1955</span> — Conferência de Bandung: emergência do Terceiro Mundo</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1957–60</span> — Descolonização acelerada na África e Ásia</span></div>
+    </div>
+    <div class="cell">
+      <ul class="cl">
+        <li>Desenvolvimento = crescimento económico; crescimento exige capital</li>
+        <li>Ajuda preenche dois défices: poupança interna insuficiente e escassez de divisas (two-gap model, Chenery-Strout)</li>
+        <li>Motivação mista: solidariedade, contenção do comunismo e abertura de mercados</li>
+      </ul>
+    </div>
+    <div class="cell">
+      <ul class="cl">
+        <li>OECE (1948) → OCDE (1961); CAD/OCDE (1961)</li>
+        <li>Programa Point Four dos EUA (1949)</li>
+        <li>Ajuda bilateral dominante; projetos de infraestrutura</li>
+        <li>Meta 0,7% RNB acordada nos anos 60</li>
+      </ul>
+    </div>
+    <div class="cell">
+      <div class="crit">Plano Marshall não era replicável: Europa tinha capital humano e instituições; países do Sul, não</div>
+      <div class="crit">Crescimento não implica redução de pobreza nem distribuição de renda</div>
+      <div class="crit">Forte componente geopolítica: ajuda como instrumento de alinhamento ideológico</div>
+    </div>
+  </div>
+
+  <!-- FASE 2 -->
+  <div class="phase-row p2">
+    <div class="cell cell-period">
+      <span class="period-year">1960–1973</span>
+      <span class="period-label">Décadas do Desenvolvimento</span>
+    </div>
+    <div class="cell">
+      <span class="paradigm-tag">Capital + Técnica: desenvolvimento planificado
+        <span class="paradigm-sub">Cooperação técnica e planificação nacional</span>
+      </span>
+    </div>
+    <div class="cell">
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1960</span> — 1ª Década do Desenvolvimento da ONU; criação do BID e Banco Africano</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1962–65</span> — Independência da maioria dos países africanos; novos receptores de APD</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1964</span> — Criação da UNCTAD: países do Sul demandam novo regime de comércio</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1971</span> — Nixon encerra conversibilidade dólar-ouro: colapso de Bretton Woods</span></div>
+    </div>
+    <div class="cell">
+      <ul class="cl">
+        <li>Expansão da cooperação técnica: peritos, formação de quadros, assistência à planificação</li>
+        <li>Consolidação e definição formal da APD pelo CAD</li>
+        <li>Ajuda-projeto: construção de infraestrutura física e social</li>
+        <li>Estado visto como motor do desenvolvimento</li>
+      </ul>
+    </div>
+    <div class="cell">
+      <ul class="cl">
+        <li>AID/Banco Mundial: principal canal multilateral</li>
+        <li>PNUD (1965): coordenação da assistência técnica ONU</li>
+        <li>Expansão bilateral dos países europeus pós-reconstrução</li>
+        <li>Cooperação técnica absorve parcela crescente da APD</li>
+      </ul>
+    </div>
+    <div class="cell">
+      <div class="crit">Resultados decepcionantes: crescimento não chegou aos pobres</div>
+      <div class="crit">Cooperação técnica como substituição de capacidades locais, não formação</div>
+      <div class="crit">Ajuda ligada: empresas do doador beneficiam mais do que o receptor</div>
+    </div>
+  </div>
+
+  <!-- FASE 3 -->
+  <div class="phase-row p3">
+    <div class="cell cell-period">
+      <span class="period-year">1973–1979</span>
+      <span class="period-label">Necessidades Básicas</span>
+    </div>
+    <div class="cell">
+      <span class="paradigm-tag">Redistribuição, pobreza e necessidades básicas
+        <span class="paradigm-sub">BM (McNamara); OIT; Nova Ordem Económica Internacional</span>
+      </span>
+    </div>
+    <div class="cell">
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1973</span> — 1º Choque do Petróleo: embargo OPAEP, preço do barril quadruplica</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1973–79</span> — Reciclagem de petrodólares: crédito comercial barato inunda países em desenvolvimento</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1974</span> — Resolução ONU pela Nova Ordem Económica Internacional (NOEI)</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1979</span> — 2º Choque do Petróleo (Revolução Iraniana); início do aperto monetário Volcker</span></div>
+    </div>
+    <div class="cell">
+      <ul class="cl">
+        <li>Crítica ao crescimento sem redistribuição; foco em pobreza absoluta</li>
+        <li>BM sob McNamara (1968–81): expansão massiva de empréstimos; prioridade à agricultura e serviços básicos</li>
+        <li>Abordagem de necessidades básicas (OIT, 1976): saúde, educação, água, alimentação</li>
+        <li>Endividamento externo via crédito comercial a taxas variáveis</li>
+      </ul>
+    </div>
+    <div class="cell">
+      <ul class="cl">
+        <li>Ajuda multilateral em forte expansão (BM e bancos regionais)</li>
+        <li>Apoio à balança de pagamentos ganha importância</li>
+        <li>Primeiras ONGD de desenvolvimento de porte significativo</li>
+        <li>Conferência UNCTAD de Nairobi (1976): debate sobre dívida e comércio</li>
+      </ul>
+    </div>
+    <div class="cell">
+      <div class="crit">Discurso da pobreza coexiste com lógica macroeconómica que gera dívida</div>
+      <div class="crit">Crédito comercial percebido como "mais livre" que APD, mas com riscos ocultos de taxas variáveis</div>
+      <div class="crit">NOEI fracassa: Norte recusa nova arquitetura do comércio internacional</div>
+    </div>
+  </div>
+
+  <!-- FASE 4 -->
+  <div class="phase-row p4">
+    <div class="cell cell-period">
+      <span class="period-year">1980–1989</span>
+      <span class="period-label">Ajustamento Estrutural</span>
+    </div>
+    <div class="cell">
+      <span class="paradigm-tag">Consenso de Washington: liberalização, privatização, austeridade
+        <span class="paradigm-sub">FMI/BM como gestores da crise</span>
+      </span>
+    </div>
+    <div class="cell">
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1979–81</span> — Choque Volcker: taxa de juro americana sobe a ~20% a.a.; custo da dívida explode</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1982</span> — México declara moratória: deflagra a crise da dívida latino-americana</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1985</span> — Plano Baker (EUA): renegociação da dívida condicionada a reformas</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1989</span> — Williamson sistematiza o "Consenso de Washington"; queda do Muro de Berlim</span></div>
+    </div>
+    <div class="cell">
+      <ul class="cl">
+        <li>Ajuda-programa substitui ajuda-projeto: condicionalidade macroeconómica (PAE)</li>
+        <li>FMI e BM impõem disciplina orçamental, liberalização e privatizações</li>
+        <li>APD como alavanca de reforma estrutural dos Estados receptores</li>
+        <li>Ajuda financia ajustamento, não desenvolvimento</li>
+      </ul>
+    </div>
+    <div class="cell">
+      <ul class="cl">
+        <li>PAE (Programas de Ajustamento Estrutural): instrumento central</li>
+        <li>Apoio à balança de pagamentos; créditos ao ajustamento (BM)</li>
+        <li>Crescimento explosivo das ONGD como alternativa à cooperação estatal</li>
+        <li>Plano Brady (1989): reestruturação da dívida com desconto</li>
+      </ul>
+    </div>
+    <div class="cell">
+      <div class="crit">"Década perdida do desenvolvimento": retrocesso nos indicadores sociais na África e América Latina</div>
+      <div class="crit">Condicionalidade viola princípio da soberania e ownership dos países receptores</div>
+      <div class="crit">Custos sociais do ajustamento recaem sobre os mais pobres; UNICEF: "ajustamento com face humana"</div>
+    </div>
+  </div>
+
+  <!-- FASE 5 -->
+  <div class="phase-row p5">
+    <div class="cell cell-period">
+      <span class="period-year">1990–2000</span>
+      <span class="period-label">Pós-Guerra Fria</span>
+    </div>
+    <div class="cell">
+      <span class="paradigm-tag">Boa governação, condicionalidade política e redução da pobreza
+        <span class="paradigm-sub">Pós-Consenso de Washington; PRSP; HIPC</span>
+      </span>
+    </div>
+    <div class="cell">
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1989–91</span> — Colapso da URSS: países ex-comunistas tornam-se novos receptores de APD</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1994</span> — Genocídio no Ruanda: crise da ajuda humanitária e debate sobre intervenção</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1996</span> — Iniciativa HIPC (BM/FMI): primeiro alívio sistemático da dívida dos países pobres</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1997</span> — APD atinge mínimo histórico (43,2 biliões USD); crise financeira asiática</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1999</span> — HIPC reforçada; surgem os PRSP; Stiglitz critica abertamente o FMI</span></div>
+    </div>
+    <div class="cell">
+      <ul class="cl">
+        <li>Condicionalidade política: democracia, direitos humanos e boa governação como pré-requisitos</li>
+        <li>Fluxos privados (IDE) superam APD pela 1ª vez; questionamento da relevância da ajuda pública</li>
+        <li>SWAp: coordenação de doadores por setor, com liderança do governo receptor</li>
+        <li>PRSP: países definem seus próprios planos de redução da pobreza</li>
+      </ul>
+    </div>
+    <div class="cell">
+      <ul class="cl">
+        <li>SWAp (Abordagem Sectorial): instrumento de coordenação</li>
+        <li>Iniciativa HIPC e HIPC Reforçada: alívio da dívida multilateral</li>
+        <li>IDH (PNUD, desde 1990): medida alternativa ao PIB per capita</li>
+        <li>Ajuda humanitária em expansão (Ruanda, Bósnia, Kosovo, Timor)</li>
+      </ul>
+    </div>
+    <div class="cell">
+      <div class="crit">Cansaço da ajuda (aid fatigue): eficácia questionada por doadores e opinião pública</div>
+      <div class="crit">Meta 0,7% RNB nunca atingida pela maioria; APD cai em termos absolutos e relativos</div>
+      <div class="crit">PRSP criticados como PAE com nova embalagem: conteúdo e condicionalidade semelhantes</div>
+    </div>
+  </div>
+
+  <!-- FASE 6 -->
+  <div class="phase-row p6">
+    <div class="cell cell-period">
+      <span class="period-year">2000–2005</span>
+      <span class="period-label">Eficácia e Parceria</span>
+    </div>
+    <div class="cell">
+      <span class="paradigm-tag">ODM, ownership, parceria e harmonização
+        <span class="paradigm-sub">Consenso de Monterrey; Declaração de Roma; Pós-11/Set</span>
+      </span>
+    </div>
+    <div class="cell">
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2000</span> — Cúpula do Milénio: aprovação dos ODM (8 metas, prazo 2015)</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2001</span> — Atentados de 11 de Setembro: segurança entra na agenda da cooperação</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2002</span> — Conferência de Monterrey: "Consenso de Monterrey" sobre financiamento do desenvolvimento</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2003</span> — Declaração de Roma sobre Harmonização: doadores coordenam procedimentos</span></div>
+    </div>
+    <div class="cell">
+      <ul class="cl">
+        <li>ODM como quadro de referência único: metas quantificáveis e prazo definido</li>
+        <li>Ownership: países receptores devem liderar seus próprios processos</li>
+        <li>Distribuição por desempenho: ajuda vai para países com "boas políticas"</li>
+        <li>Ambiguidade pós-11/Set: APD cresce, mas parte vai para objetivos de segurança</li>
+      </ul>
+    </div>
+    <div class="cell">
+      <ul class="cl">
+        <li>Apoio Orçamental Geral: financiamento direto ao orçamento do Estado receptor</li>
+        <li>SWAp consolidado como instrumento preferido</li>
+        <li>Ano Internacional do Microcrédito (2005)</li>
+        <li>Ajuda humanitária: ~10% da APD desde 1999</li>
+      </ul>
+    </div>
+    <div class="cell">
+      <div class="crit">Desfasamento entre retórica e prática: compromissos de Monterrey raramente cumpridos</div>
+      <div class="crit">Instrumentalização pós-11/Set: APD desviada para objetivos securitários</div>
+      <div class="crit">Ownership formal mas condicionalidade de facto persiste: "quem paga decide"</div>
+      <div class="crit">Conceito de APD inflacionado: custos administrativos, perdão de dívida e refugiados internos contam como ajuda</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div class="footer-txt">
+      <strong>Fonte primária:</strong> Afonso, Maria Manuela. "A Evolução da Cooperação para o Desenvolvimento."<br>
+      In: Afonso; Fernandes (orgs.). <em>Introdução à Cooperação para o Desenvolvimento</em>. Lisboa: Fórum DC / OIKOS / IMVF, 2005.<br>
+      <strong>Nota:</strong> Conjunturas críticas incorporam dados históricos de fontes complementares (CAD/OCDE, FMI, BM, ONU).
+    </div>
+    <div class="legend">
+      <div class="leg-item"><span style="font-size:0.9rem">↯</span> Crítica ou limite</div>
+      <div class="leg-item"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ink)"></span> Conjuntura crítica</div>
+    </div>
+  </div>
+</div><!-- /view-table -->
+
+
+<!-- ============================================================
+     VIEW 2 — LINHA DO TEMPO
+     ============================================================ -->
+<div id="view-timeline" class="view">
+  <div class="page-header">
+    <div class="header-eyebrow">Cooperação Internacional para o Desenvolvimento &mdash; Material de Aula</div>
+    <h1>Linha do Tempo Interativa</h1>
+    <div class="header-meta">Fases da cooperação (barras) e conjunturas críticas (eventos pontuais). Arraste para navegar &bull; Scroll para zoom &bull; Clique nos itens para detalhes.</div>
+  </div>
+  <hr class="divider">
+
+  <div id="tl-wrap">
+    <div id="timeline"></div>
+    <div id="tl-tooltip"></div>
+  </div>
+
+  <div class="tl-legend">
+    <div class="tl-leg-item"><div class="tl-swatch" style="background:rgba(42,92,122,0.18);border-color:#2a5c7a"></div> Fase 1 — Origens (1945–60)</div>
+    <div class="tl-leg-item"><div class="tl-swatch" style="background:rgba(61,107,58,0.18);border-color:#3d6b3a"></div> Fase 2 — Décadas do Des. (1960–73)</div>
+    <div class="tl-leg-item"><div class="tl-swatch" style="background:rgba(122,74,26,0.18);border-color:#7a4a1a"></div> Fase 3 — Nec. Básicas (1973–79)</div>
+    <div class="tl-leg-item"><div class="tl-swatch" style="background:rgba(139,58,42,0.18);border-color:#8b3a2a"></div> Fase 4 — Ajustamento (1980–89)</div>
+    <div class="tl-leg-item"><div class="tl-swatch" style="background:rgba(74,42,122,0.18);border-color:#4a2a7a"></div> Fase 5 — Pós-Guerra Fria (1990–00)</div>
+    <div class="tl-leg-item"><div class="tl-swatch" style="background:rgba(42,107,92,0.18);border-color:#2a6b5c"></div> Fase 6 — Eficácia (2000–05)</div>
+    <div class="tl-leg-item"><div class="tl-swatch" style="background:#c8b89a;border-color:#7a6a50"></div> Conjuntura crítica</div>
+  </div>
+  <div class="tl-hint">* Clique em qualquer evento ou fase para ver descrição detalhada.</div>
+</div><!-- /view-timeline -->
+
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vis-timeline/7.7.2/vis-timeline-graph2d.min.js"></script>
+<script>
+/* ---- VIEW SWITCH ---- */
+function switchView(v) {
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('view-' + v).classList.add('active');
+  document.getElementById('btn-' + v).classList.add('active');
+  if (v === 'timeline' && !window._tlInit) initTimeline();
+}
+
+/* ---- TIMELINE DATA ---- */
+function initTimeline() {
+  window._tlInit = true;
+
+  const groups = new vis.DataSet([
+    { id: 1, content: 'Fases' },
+    { id: 2, content: 'Conjunturas' }
+  ]);
+
+  const PHASES = [
+    { id: 'p1', group: 1, start: '1945-01-01', end: '1960-01-01',
+      content: 'Fase 1 — Origens',
+      color: { background: 'rgba(42,92,122,0.18)', border: '#2a5c7a' },
+      detail: { title: 'Fase 1 — Origens (1945–1960)', body: 'Paradigma: crescimento via transferência de capital. Modelos Harrod-Domar e Rostow (take-off). Ajuda preenche dois défices — poupança interna e divisas. Motivação mista: solidariedade, contenção do comunismo e abertura de mercados.', tipo: 'Fase' }
+    },
+    { id: 'p2', group: 1, start: '1960-01-01', end: '1973-01-01',
+      content: 'Fase 2 — Décadas do Des.',
+      color: { background: 'rgba(61,107,58,0.18)', border: '#3d6b3a' },
+      detail: { title: 'Fase 2 — Décadas do Desenvolvimento (1960–1973)', body: 'Capital + Cooperação Técnica como motores do desenvolvimento planificado. Expansão das ONGD embrionárias, do PNUD (1965) e da AID/BM. Cooperação técnica criticada por substituir em vez de formar capacidades locais.', tipo: 'Fase' }
+    },
+    { id: 'p3', group: 1, start: '1973-01-01', end: '1979-01-01',
+      content: 'Fase 3 — Nec. Básicas',
+      color: { background: 'rgba(122,74,26,0.18)', border: '#7a4a1a' },
+      detail: { title: 'Fase 3 — Necessidades Básicas (1973–1979)', body: 'Foco na pobreza absoluta e nas necessidades básicas (OIT, 1976). BM sob McNamara amplia empréstimos. Reciclagem dos petrodólares: crédito comercial barato e a taxas variáveis inunda países em desenvolvimento, gestando a crise dos anos 80.', tipo: 'Fase' }
+    },
+    { id: 'p4', group: 1, start: '1980-01-01', end: '1990-01-01',
+      content: 'Fase 4 — Ajustamento',
+      color: { background: 'rgba(139,58,42,0.18)', border: '#8b3a2a' },
+      detail: { title: 'Fase 4 — Ajustamento Estrutural (1980–1989)', body: 'Consenso de Washington: disciplina orçamental, liberalização, privatização. PAE (Programas de Ajustamento Estrutural) substituem a ajuda-projeto. APD serve o ajustamento, não o desenvolvimento. "Década perdida" na América Latina e África.', tipo: 'Fase' }
+    },
+    { id: 'p5', group: 1, start: '1990-01-01', end: '2000-01-01',
+      content: 'Fase 5 — Pós-Guerra Fria',
+      color: { background: 'rgba(74,42,122,0.18)', border: '#4a2a7a' },
+      detail: { title: 'Fase 5 — Pós-Guerra Fria e Cansaço da Ajuda (1990–2000)', body: 'Condicionalidade política: democracia e boa governação como pré-requisitos. IDE supera APD. SWAp e PRSP substituem os PAE. APD atinge mínimo histórico em 1997. Cansaço da ajuda (aid fatigue) entre doadores.', tipo: 'Fase' }
+    },
+    { id: 'p6', group: 1, start: '2000-01-01', end: '2005-06-01',
+      content: 'Fase 6 — Eficácia e Parceria',
+      color: { background: 'rgba(42,107,92,0.18)', border: '#2a6b5c' },
+      detail: { title: 'Fase 6 — Eficácia e Parceria (2000–2005)', body: 'ODM como quadro de referência único. Ownership, parceria e harmonização. Consenso de Monterrey (2002) e Declaração de Roma (2003). Ambiguidade pós-11/Set: APD cresce, mas parte é desviada para objetivos securitários.', tipo: 'Fase' }
+    }
+  ];
+
+  const EVENTS = [
+    { id: 'e1',  group: 2, start: '1944-07-01', content: 'Bretton Woods',
+      detail: { title: 'Conferência de Bretton Woods (1944)', body: 'Criação do FMI e do BIRD (Banco Mundial). Arquitetura financeira internacional do pós-guerra. Base institucional para o financiamento do desenvolvimento.', tipo: 'Conjuntura' } },
+    { id: 'e2',  group: 2, start: '1945-06-01', content: 'Fundação da ONU',
+      detail: { title: 'Fundação da ONU e início da Guerra Fria (1945)', body: 'A criação da ONU institucionaliza o multilateralismo do desenvolvimento. Simultaneamente, o início da Guerra Fria carrega a ajuda externa de motivações geopolíticas e anticomunistas.', tipo: 'Conjuntura' } },
+    { id: 'e3',  group: 2, start: '1948-04-03', content: 'Plano Marshall',
+      detail: { title: 'Plano Marshall (1948)', body: 'O ERP (European Recovery Program) transferiu ~13 biliões de dólares para a reconstrução europeia em quatro anos. Tornou-se o modelo de referência para a cooperação para o desenvolvimento, embora inaplicável ao Sul Global pela diferença de capacidades institucionais.', tipo: 'Conjuntura' } },
+    { id: 'e4',  group: 2, start: '1955-04-18', content: 'Conferência de Bandung',
+      detail: { title: 'Conferência de Bandung (1955)', body: '29 países afro-asiáticos reunidos na Indonésia proclamam os princípios do Não-Alinhamento. Emergência do Terceiro Mundo como ator coletivo nas relações internacionais. Pressão por uma cooperação não vinculada às lógicas da Guerra Fria.', tipo: 'Conjuntura' } },
+    { id: 'e5',  group: 2, start: '1961-09-30', content: 'Criação do CAD/OCDE',
+      detail: { title: 'Criação do CAD/OCDE (1961)', body: 'O Comité de Ajuda ao Desenvolvimento da OCDE institucionaliza a coordenação entre doadores ocidentais, define o conceito de APD, estabelece as listas de países receptores e passa a publicar estatísticas comparadas. Portugal é membro fundador.', tipo: 'Conjuntura' } },
+    { id: 'e6',  group: 2, start: '1964-03-30', content: 'Criação da UNCTAD',
+      detail: { title: 'UNCTAD (1964)', body: 'A Conferência das Nações Unidas sobre Comércio e Desenvolvimento surge como contrapeso do Sul Global às instituições de Bretton Woods. Demanda por comércio justo, preferências tarifárias e nova ordem económica internacional.', tipo: 'Conjuntura' } },
+    { id: 'e7',  group: 2, start: '1971-08-15', content: 'Fim de Bretton Woods',
+      detail: { title: 'Nixon encerra a conversibilidade dólar-ouro (1971)', body: 'A decisão unilateral dos EUA de suspender a conversibilidade do dólar em ouro desmantelou o sistema de câmbio fixo de Bretton Woods, inaugurando a era das taxas de câmbio flutuantes e de maior volatilidade financeira internacional.', tipo: 'Conjuntura' } },
+    { id: 'e8',  group: 2, start: '1973-10-17', content: '1º Choque do Petróleo',
+      detail: { title: '1º Choque do Petróleo (1973)', body: 'Embargo da OPAEP em resposta à Guerra do Yom Kippur. O preço do barril passa de ~3 para ~12 dólares em meses. Os países produtores acumulam petrodólares que são depositados na banca comercial ocidental, gerando excesso de liquidez e pressão para emprestar ao Sul Global.', tipo: 'Conjuntura' } },
+    { id: 'e9',  group: 2, start: '1974-05-01', content: 'Resolução NOEI',
+      detail: { title: 'Nova Ordem Económica Internacional — NOEI (1974)', body: 'Resolução 3201 da Assembleia Geral da ONU. Países em desenvolvimento demandam soberania sobre recursos naturais, reforma do comércio internacional e melhores condições de transferência de tecnologia. A proposta foi bloqueada pelos países industrializados.', tipo: 'Conjuntura' } },
+    { id: 'e10', group: 2, start: '1979-01-16', content: '2º Choque + Volcker',
+      detail: { title: '2º Choque do Petróleo e Choque Volcker (1979)', body: 'A Revolução Iraniana dispara o 2º choque petrolífero. Em resposta à inflação americana, o Fed sob Paul Volcker eleva as taxas de juro a ~20% a.a. Como a dívida dos países em desenvolvimento era a taxas variáveis, o custo do serviço da dívida explodiu imediatamente.', tipo: 'Conjuntura' } },
+    { id: 'e11', group: 2, start: '1982-08-12', content: 'Moratória do México',
+      detail: { title: 'Moratória do México (1982)', body: 'Em agosto de 1982 o México declara que não pode honrar suas obrigações de dívida externa, deflagrando a crise da dívida latino-americana. Seguiram-se Brasil, Argentina e dezenas de países. O FMI e o BM tornam-se gestores da crise, impondo os PAE como condição de novos empréstimos.', tipo: 'Conjuntura' } },
+    { id: 'e12', group: 2, start: '1989-11-09', content: 'Queda do Muro de Berlim',
+      detail: { title: 'Queda do Muro de Berlim e fim da Guerra Fria (1989)', body: 'O colapso do bloco soviético reorienta a cooperação para o desenvolvimento: países da Europa Central e Oriental tornam-se novos receptores de APD, e a motivação geopolítica anticomunista perde centralidade. Abre-se espaço para a condicionalidade democrática.', tipo: 'Conjuntura' } },
+    { id: 'e13', group: 2, start: '1994-04-06', content: 'Genocídio no Ruanda',
+      detail: { title: 'Genocídio no Ruanda (1994)', body: 'O assassinato de aproximadamente 800 mil pessoas em cem dias expõe os limites da comunidade internacional de resposta a crises humanitárias e coloca em debate a relação entre ajuda, conflito e intervenção. Impulsiona reformas na arquitetura da ajuda humanitária.', tipo: 'Conjuntura' } },
+    { id: 'e14', group: 2, start: '1996-09-01', content: 'Iniciativa HIPC',
+      detail: { title: 'Iniciativa HIPC (1996)', body: 'O BM e o FMI lançam a Heavily Indebted Poor Countries Initiative: primeiro mecanismo sistemático de alívio da dívida multilateral para 42 países pobres muito endividados. Reforçada em 1999 com maiores reduções e condicionalidade via PRSP.', tipo: 'Conjuntura' } },
+    { id: 'e15', group: 2, start: '1997-07-02', content: 'Crise Asiática',
+      detail: { title: 'Crise Financeira Asiática e Mínimo da APD (1997)', body: 'A crise cambial que começa na Tailândia e se alastra à Coreia do Sul, Indonésia e outros países asiáticos questiona o modelo do Consenso de Washington. No mesmo ano, a APD mundial atinge seu mínimo histórico de 43,2 biliões de dólares.', tipo: 'Conjuntura' } },
+    { id: 'e16', group: 2, start: '2000-09-08', content: 'Cúpula do Milénio / ODM',
+      detail: { title: 'Cúpula do Milénio e Objetivos de Desenvolvimento do Milénio (2000)', body: '189 países adotam os ODM: 8 metas com indicadores mensuráveis e prazo de 2015. Tornam-se o quadro de referência unificado para a cooperação para o desenvolvimento durante 15 anos, incluindo metas de redução da pobreza extrema, mortalidade infantil, educação e paridade de género.', tipo: 'Conjuntura' } },
+    { id: 'e17', group: 2, start: '2001-09-11', content: '11 de Setembro',
+      detail: { title: 'Atentados de 11 de Setembro (2001)', body: 'Os ataques nos EUA introduzem a segurança como variável central da cooperação para o desenvolvimento. Afeganistão e Iraque passam a receber volumes extraordinários de APD por razões estratégicas. Gera ambiguidade sobre os objetivos reais da cooperação e inflaciona as estatísticas de APD.', tipo: 'Conjuntura' } },
+    { id: 'e18', group: 2, start: '2002-03-18', content: 'Consenso de Monterrey',
+      detail: { title: 'Conferência de Monterrey e Consenso de Monterrey (2002)', body: 'Primeira grande conferência da ONU sobre financiamento do desenvolvimento. Os países ricos comprometem-se a aumentar a APD, reformar o comércio e promover o investimento privado. Portugal compromete-se a atingir 0,33% do RNB em APD até 2006. Na prática, os compromissos foram amplamente descumpridos.', tipo: 'Conjuntura' } },
+    { id: 'e19', group: 2, start: '2003-02-25', content: 'Declaração de Roma',
+      detail: { title: 'Declaração de Roma sobre Harmonização (2003)', body: 'Os principais doadores comprometem-se a harmonizar procedimentos, usar os sistemas nacionais dos países receptores e reduzir os custos de transação da ajuda fragmentada. Antecipa a Declaração de Paris (2005) sobre eficácia da ajuda.', tipo: 'Conjuntura' } }
+  ];
+
+  const allItems = [...PHASES, ...EVENTS].map(item => ({
+    ...item,
+    type: PHASES.includes(item) ? 'range' : 'point',
+    title: item.detail.title,
+    style: PHASES.includes(item)
+      ? `background-color:${item.color.background};border-color:${item.color.border};color:${item.color.border};font-weight:600;`
+      : 'background-color:#c8b89a;border-color:#7a6a50;color:#3a3020;'
+  }));
+
+  const items = new vis.DataSet(allItems);
+
+  const container = document.getElementById('timeline');
+  const options = {
+    start: '1942-01-01',
+    end:   '2006-01-01',
+    min:   '1940-01-01',
+    max:   '2008-01-01',
+    height: '540px',
+    groupOrder: 'id',
+    orientation: { axis: 'top' },
+    zoomMin: 1000 * 60 * 60 * 24 * 365 * 2,   // 2 anos
+    zoomMax: 1000 * 60 * 60 * 24 * 365 * 70,   // 70 anos
+    tooltip: { followMouse: false, overflowMethod: 'cap' },
+    locale: 'pt',
+    showCurrentTime: false,
+    stack: true,
+    selectable: true,
+    moveable: true,
+    zoomable: true,
+  };
+
+  const timeline = new vis.Timeline(container, items, groups, options);
+
+  /* tooltip on select */
+  const tip = document.getElementById('tl-tooltip');
+
+  timeline.on('select', function(props) {
+    if (!props.items.length) { tip.classList.remove('show'); return; }
+    const id = props.items[0];
+    const item = allItems.find(i => i.id === id);
+    if (!item) return;
+
+    const d = item.detail;
+    tip.innerHTML = `<strong>${d.title}</strong>${d.body}<br><em>${d.tipo}</em>`;
+    tip.classList.add('show');
+
+    /* position near the click but inside the wrap */
+    const wrap = document.getElementById('tl-wrap');
+    const wRect = wrap.getBoundingClientRect();
+    const cRect = container.getBoundingClientRect();
+    const relTop = cRect.top - wRect.top + 60;
+    const relLeft = Math.min(cRect.width / 2 - 10, cRect.width - 320);
+    tip.style.top  = relTop  + 'px';
+    tip.style.left = Math.max(0, relLeft) + 'px';
+  });
+
+  /* hide tooltip on click outside */
+  container.addEventListener('click', function(e) {
+    if (!e.target.closest('.vis-item')) {
+      tip.classList.remove('show');
+      timeline.setSelection([]);
+    }
+  });
+}
+</script>
+
+</body>
+</html>
