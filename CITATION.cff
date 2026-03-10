@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+title: "Fases da Cooperação para o Desenvolvimento"
+abstract: "Material de aula interativo sobre as fases históricas da cooperação internacional para o desenvolvimento (1945–2030), com quadro analítico comparativo e linha do tempo navegável."
+authors:
+  - family-names: "Diniz Aguiar"
+    given-names: "Larissa"
+    orcid: "https://orcid.org/0009-0006-5478-0702"
+    affiliation: "Pontifícia Universidade Católica de Minas Gerais (PUC Minas)"
+type: software
+license: CC-BY-4.0
+repository-code: "https://github.com/aguiarcodes/fases-coop"
+url: "https://aguiarcodes.github.io/fases-coop/"
+date-released: "2026-03-09"
+keywords:
+  - cooperação para o desenvolvimento
+  - relações internacionais
+  - ODS
+  - Agenda 2030
+  - material de aula
