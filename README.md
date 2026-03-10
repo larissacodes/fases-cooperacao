@@ -30,8 +30,8 @@ fases-cooperacao
 
 **Larissa Diniz Aguiar**  
 Professora - Departamento de Relações Internacionais, PUC Minas  
-Pesquisadora - OCI Observatório de Cooperação Internacional  
-Analista de Dados - Laboratório de Pesquisa e Projetos em Relações Internacionais
+Pesquisadora - Observatório de Cooperação Internacional, OCI  
+Analista de Dados - Laboratório de Pesquisa e Projetos em Relações Internacionais, LPPRI
 
 - [LinkedIn](https://www.linkedin.com/in/larissadinizaguiar)
 - [Lattes](http://lattes.cnpq.br/9454344975691413)
