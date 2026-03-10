@@ -7,7 +7,7 @@ authors:
     orcid: "https://orcid.org/0009-0006-5478-0702"
     affiliation: "Pontifícia Universidade Católica de Minas Gerais (PUC Minas)"
 type: software
-license: CC-BY-4.0
+license: CC-BY-NC-4.0
 repository-code: "https://github.com/aguiarcodes/fases-coop"
 url: "https://aguiarcodes.github.io/fases-coop/"
 date-released: "2026-03-09"
