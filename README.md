@@ -20,9 +20,9 @@ Cobre o período de Bretton Woods (1944) à Agenda 2030 (2015–2030), incluindo
 ## Autoria
 
 **Larissa Diniz Aguiar**  
-Professora - Departamento de Relações Internacionais, PUC Minas  
-Pesquisadora - OCI Observatório de Cooperação Internacional
-Analista de Dados - Laboratório de Pesquisa e Projetos em Relações Internacionais
+Professora — Departamento de Relações Internacionais, PUC Minas  
+Pesquisadora — OCI Observatório de Cooperação Internacional  
+Analista de Dados — Laboratório de Pesquisa e Projetos em Relações Internacionais
 
 - [LinkedIn](https://www.linkedin.com/in/larissadinizaguiar)
 - [Lattes](http://lattes.cnpq.br/9454344975691413)
