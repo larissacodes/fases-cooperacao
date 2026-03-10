@@ -19,7 +19,7 @@ Cobre o período de Bretton Woods (1944) à Agenda 2030 (2015–2030), incluindo
 
 ## 🗂️ Estrutura do repositório
 ```
-fases-coop/
+fases-cooperacao
 ├── index.html        # material interativo (quadro analítico + linha do tempo)
 ├── CITATION.cff      # metadados para citação acadêmica
 ├── LICENSE           # licença CC BY-NC 4.0
