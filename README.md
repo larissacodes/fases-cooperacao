@@ -1,4 +1,4 @@
-# 🌐 Fases da Cooperação para o Desenvolvimento
+# Fases da Cooperação para o Desenvolvimento
 
 Material de aula interativo sobre as fases históricas da cooperação para o desenvolvimento (1945–2030), com quadro analítico comparativo e linha do tempo navegável.
 
@@ -6,7 +6,7 @@ Material de aula interativo sobre as fases históricas da cooperação para o de
 
 ---
 
-## 📋 Sobre o material
+## Sobre o material
 
 O material apresenta oito fases da cooperação internacional para o desenvolvimento, organizadas em dois formatos:
 
@@ -26,7 +26,7 @@ fases-coop/
 └── README.md         # documentação do repositório
 ```
 
-## 👩‍🏫 Autoria
+## Autoria
 
 **Larissa Diniz Aguiar**  
 Professora - Departamento de Relações Internacionais, PUC Minas  
@@ -38,7 +38,7 @@ Analista de Dados - Laboratório de Pesquisa e Projetos em Relações Internacio
 
 ---
 
-## 📚 Referências bibliográficas
+## Referências bibliográficas
 
 AFONSO, Maria Manuela. A Evolução da Cooperação para o Desenvolvimento. In: AFONSO, Maria Manuela; FERNANDES, António José (orgs.). *Introdução à Cooperação para o Desenvolvimento*. Lisboa: Fórum DC / OIKOS / IMVF, 2005.
 
