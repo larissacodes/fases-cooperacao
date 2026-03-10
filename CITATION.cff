@@ -2,8 +2,8 @@ cff-version: 1.2.0
 title: "Fases da Cooperação para o Desenvolvimento"
 abstract: "Material de aula interativo sobre as fases históricas da cooperação internacional para o desenvolvimento (1945–2030), com quadro analítico comparativo e linha do tempo navegável."
 authors:
-  - family-names: "Diniz Aguiar"
-    given-names: "Larissa"
+  - family-names: "Aguiar"
+    given-names: "Larissa Diniz"
     orcid: "https://orcid.org/0009-0006-5478-0702"
     affiliation: "Pontifícia Universidade Católica de Minas Gerais (PUC Minas)"
 type: software
