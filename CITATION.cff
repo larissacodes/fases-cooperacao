@@ -17,3 +17,12 @@ keywords:
   - ODS
   - Agenda 2030
   - material de aula
+preferred-citation:
+  type: software
+  title: "Fases da Cooperação para o Desenvolvimento"
+  authors:
+    - name: "Aguiar, Larissa Diniz"
+  year: 2026
+  repository-code: "https://github.com/aguiarcodes/fases-coop"
+  url: "https://aguiarcodes.github.io/fases-coop/"
+  license: CC-BY-NC-4.0
