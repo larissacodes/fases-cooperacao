@@ -105,6 +105,10 @@ body {
   color: var(--muted);
   letter-spacing: 0.06em;
   margin-bottom: 1.1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
 }
 .header-links a {
   color: var(--muted);
@@ -113,9 +117,12 @@ body {
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  transition: color 0.2s;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 0.18rem 0.55rem;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
 }
-.header-links a:hover { color: var(--ink); }
+.header-links a:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .page-header h2 {
   font-family: 'Playfair Display', serif;
   font-size: 1.75rem;
@@ -397,9 +404,9 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--muted);
-  background: none;
-  border: 1px solid var(--rule);
+  color: var(--paper);
+  background: var(--muted);
+  border: 1px solid var(--muted);
   border-radius: 2px;
   padding: 0.18rem 0.55rem;
   cursor: pointer;
@@ -492,13 +499,11 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 <div id="view-table" class="view active">
   <div class="page-header">
     <div class="header-eyebrow">Material de Aula produzido por Larissa Diniz Aguiar</div>
-    <div class="header-links">
-      <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank">LinkedIn</a>
-      &nbsp;&bull;&nbsp;
-      <a href="http://lattes.cnpq.br/9454344975691413" target="_blank">Lattes</a>
-      &nbsp;&bull;&nbsp;
-<button class="cite-btn" onclick="openCite()">↳ Como citar</button>
-    </div>
+<div class="header-links">
+  <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank">LinkedIn</a>
+  <a href="http://lattes.cnpq.br/9454344975691413" target="_blank">Lattes</a>
+  <button class="cite-btn" onclick="openCite()">↳ Como citar</button>
+</div>
     <h2>FASES DA COOPERAÇÃO PARA O DESENVOLVIMENTO</h2>
     <div class="header-sub">Quadro analítico comparativo · 1945–2030</div>
   </div>
@@ -862,13 +867,11 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 <div id="view-timeline" class="view">
   <div class="page-header">
     <div class="header-eyebrow">Material de Aula produzido por Larissa Diniz Aguiar</div>
-    <div class="header-links">
-      <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank">LinkedIn</a>
-      &nbsp;&bull;&nbsp;
-      <a href="http://lattes.cnpq.br/9454344975691413" target="_blank">Lattes</a>
-      &nbsp;&bull;&nbsp;
-<button class="cite-btn" onclick="openCite()">↳ Como citar</button>
-    </div>
+<div class="header-links">
+  <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank">LinkedIn</a>
+  <a href="http://lattes.cnpq.br/9454344975691413" target="_blank">Lattes</a>
+  <button class="cite-btn" onclick="openCite()">↳ Como citar</button>
+</div>
     <h2>LINHA DO TEMPO INTERATIVA</h2>
     <div class="header-sub">Fases da cooperação (barras) e conjunturas críticas (eventos pontuais) &bull; Arraste para navegar &bull; Scroll para zoom &bull; Clique nos itens para detalhes</div>
   </div>
