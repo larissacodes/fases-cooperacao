@@ -1141,7 +1141,7 @@ function initTimeline() {
 
   <div class="cite-format-label">APA / CFF</div>
   <div class="cite-text-box" id="cite-apa">
-    Aguiar, Larissa Diniz. (2026). <em>Fases da Cooperação para o Desenvolvimento</em> [Computer software]. https://github.com/aguiarcodes/fases-cooperacao
+    Aguiar, Larissa Diniz. (2026). <em>Fases da Cooperação para o Desenvolvimento</em> [Computer software]. https://github.com/larissacodes/fases-cooperacao
   </div>
   <div class="cite-actions">
     <button class="cite-copy-btn" onclick="copyCite('apa', this)">Copiar</button>
@@ -1149,7 +1149,7 @@ function initTimeline() {
 
   <div class="cite-format-label" style="margin-top:0.8rem">ABNT</div>
   <div class="cite-text-box" id="cite-abnt">
-    AGUIAR, Larissa Diniz. <strong>Fases da Cooperação para o Desenvolvimento</strong>. 2026. Software. Disponível em: https://github.com/aguiarcodes/fases-cooperacao
+    AGUIAR, Larissa Diniz. <strong>Fases da Cooperação para o Desenvolvimento</strong>. 2026. Software. Disponível em: https://github.com/larissacodes/fases-cooperacao
   </div>
   <div class="cite-actions">
     <button class="cite-copy-btn" onclick="copyCite('abnt', this)">Copiar</button>
@@ -1168,8 +1168,8 @@ function closeCite() {
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeCite(); });
 
 var CITE_TEXT = {
-  apa:  'Aguiar, Larissa Diniz. (2026). Fases da Cooperação para o Desenvolvimento [Computer software]. https://github.com/aguiarcodes/fases-cooperacao',
-  abnt: 'AGUIAR, Larissa Diniz. Fases da Cooperação para o Desenvolvimento. 2026. Software. Disponível em: https://github.com/aguiarcodes/fases-cooperacao'
+  apa:  'Aguiar, Larissa Diniz. (2026). Fases da Cooperação para o Desenvolvimento [Computer software]. https://github.com/larissacodes/fases-cooperacao',
+  abnt: 'AGUIAR, Larissa Diniz. Fases da Cooperação para o Desenvolvimento. 2026. Software. Disponível em: https://github.com/larissacodes/fases-cooperacao'
 };
 function copyCite(format, btn) {
   navigator.clipboard.writeText(CITE_TEXT[format]).then(function() {
