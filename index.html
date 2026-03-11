@@ -344,7 +344,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 
 /* tooltip da linha do tempo */
 #tl-tooltip {
-  position: absolute;
+  position: fixed;
   max-width: 300px;
   background: var(--ink);
   color: var(--paper);
@@ -1064,13 +1064,11 @@ function initTimeline() {
     tip.innerHTML = `<strong>${d.title}</strong>${d.body}<br><em>${d.tipo}</em>`;
     tip.classList.add('show');
 
-    const wrap = document.getElementById('tl-wrap');
-    const wRect = wrap.getBoundingClientRect();
-    const cRect = container.getBoundingClientRect();
-    const relTop = cRect.top - wRect.top + 60;
-    const relLeft = Math.min(cRect.width / 2 - 10, cRect.width - 320);
-    tip.style.top  = relTop  + 'px';
-    tip.style.left = Math.max(0, relLeft) + 'px';
+const cRect = container.getBoundingClientRect();
+const tipTop = cRect.top + 60;
+const tipLeft = cRect.left + Math.max(0, Math.min(cRect.width / 2 - 150, cRect.width - 320));
+tip.style.top  = tipTop + 'px';
+tip.style.left = tipLeft + 'px';
   });
 
   container.addEventListener('click', function(e) {
