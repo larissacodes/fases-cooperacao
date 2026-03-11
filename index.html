@@ -465,12 +465,22 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 #tl-wrap {
   overflow-x: auto;
 }
+  
+#tl-overlay { display: none; }
 
 /* responsivo */
 @media (max-width: 900px) {
   .page-header h2 { font-size: 1.3rem; }
   .view { padding-top: calc(var(--nav-h) + 4.5rem); }
   #timeline { min-width: 900px; }
+  #tl-wrap { position: relative; }
+  #tl-overlay {
+    display: block;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 540px;
+    z-index: 50;
+  }
 }
 </style>
 </head>
@@ -493,7 +503,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
     <div class="header-links">
       <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank">LinkedIn</a>
       <a href="http://lattes.cnpq.br/9454344975691413" target="_blank">Lattes</a>
-      <button class="cite-btn" onclick="openCite()">↳ Citar material</button>
+      <button class="cite-btn" onclick="openCite()">Citar material</button>
     </div>
     <h2>FASES DA COOPERAÇÃO PARA O DESENVOLVIMENTO</h2>
     <div class="header-sub">Quadro analítico comparativo · 1945–2030</div>
@@ -861,7 +871,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
     <div class="header-links">
       <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank">LinkedIn</a>
       <a href="http://lattes.cnpq.br/9454344975691413" target="_blank">Lattes</a>
-      <button class="cite-btn" onclick="openCite()">↳ Citar material</button>
+      <button class="cite-btn" onclick="openCite()">Citar material</button>
     </div>
     <h2>LINHA DO TEMPO INTERATIVA</h2>
     <div class="header-sub">Fases da cooperação (barras) e conjunturas críticas (eventos pontuais) &bull; Arraste para navegar &bull; Scroll para zoom &bull; Toque nos itens para detalhes</div>
@@ -869,6 +879,12 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
   <hr class="divider">
   <div id="tl-wrap">
     <div id="timeline"></div>
+    <div id="tl-wrap">
+  <div id="tl-wrap">
+  <div id="timeline"></div>
+  <div id="tl-overlay"></div>
+  <div id="tl-tooltip"></div>
+</div>
     <div id="tl-tooltip"></div>
   </div>
 
@@ -1081,8 +1097,32 @@ function initTimeline() {
     if (top  + tipH > vh - 10) top  = e.clientY - tipH - 12;
     tip.style.position = 'fixed';
     tip.style.left = Math.max(8, left) + 'px';
-    tip.style.top  = Math.max(8, top)  + 'px';
+  tip.style.top  = Math.max(8, top)  + 'px';
   });
+
+  if (isMobile) {
+    const overlay = document.getElementById('tl-overlay');
+    const wrap    = document.getElementById('tl-wrap');
+    let startX, startScrollLeft;
+
+    overlay.addEventListener('touchstart', function(e) {
+      startX          = e.touches[0].clientX;
+      startScrollLeft = wrap.scrollLeft;
+    }, { passive: true });
+
+    overlay.addEventListener('touchmove', function(e) {
+      const dx = startX - e.touches[0].clientX;
+      wrap.scrollLeft = startScrollLeft + dx;
+      e.preventDefault();
+    }, { passive: false });
+
+    overlay.addEventListener('click', function(e) {
+      overlay.style.pointerEvents = 'none';
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      if (el) el.click();
+      setTimeout(() => { overlay.style.pointerEvents = ''; }, 100);
+    });
+  }
 } // fecha initTimeline
 </script>
 
