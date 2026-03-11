@@ -316,7 +316,6 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 #tl-wrap { position: relative; }
 #timeline {
   width: 100%;
-  min-width: 900px;
   height: 540px;
   border: 1px solid var(--rule);
   border-radius: 4px;
@@ -487,6 +486,10 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 }
 #tl-wrap {
   overflow-x: auto;
+}
+  @media (max-width: 900px) {
+  .page-header h2 { font-size: 1.3rem; }
+  #timeline { min-width: 900px; }
 }
 </style>
 </head>
