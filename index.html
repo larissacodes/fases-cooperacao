@@ -476,10 +476,18 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
   
 /* responsivo */
 @media (max-width: 900px) {
-  .col-headers, .phase-row { grid-template-columns: 75px 110px 1fr; }
-  .cell:nth-child(n+4) { display: none; }
-  .col-h:nth-child(n+4) { display: none; }
   .page-header h2 { font-size: 1.3rem; }
+}
+  /* scroll horizontal mobile */
+#view-table {
+  overflow-x: auto;
+}
+.col-headers,
+.phase-row {
+  min-width: 780px;
+}
+#tl-wrap {
+  overflow-x: auto;
 }
 </style>
 </head>
