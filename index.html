@@ -146,23 +146,20 @@ hr.divider {
 
 /* quadro analítico */
 .col-headers {
-position: sticky;
-top: calc(var(--nav-h) + 2.5rem);
-background: var(--paper);
-z-index: 10;
-.col-h {
-  font-size: 0.64rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--muted);
-  padding: 0 0.6rem;
+  display: grid;
+  grid-template-columns: 90px 145px 210px 210px 210px 210px;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0;
+  position: sticky;
+  top: calc(var(--nav-h) + 2.5rem);
+  background: var(--paper);
+  z-index: 10;
 }
-.col-h:first-child { padding-left: 0; }
 
 .phase-row {
   display: grid;
-  grid-template-columns: 90px 145px 1fr 1fr 1fr 1fr;
+  grid-template-columns: 90px 145px 210px 210px 210px 210px;
   border-bottom: 1px solid var(--cream);
   padding: 1.3rem 0;
   transition: background 0.18s;
