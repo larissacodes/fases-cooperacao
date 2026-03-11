@@ -97,15 +97,37 @@ body {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--ink);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3rem;
 }
-/* header-links replaced by .header-btns */
+.header-links {
+  font-size: 0.72rem;
+  font-weight: 300;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  margin-bottom: 1.1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+.header-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 0.18rem 0.55rem;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+.header-links a:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .page-header h2 {
   font-family: 'Playfair Display', serif;
   font-size: 1.75rem;
   font-weight: 700;
   line-height: 1.2;
-  margin-top: 1rem;
 }
 .header-sub {
   margin-top: 0.55rem;
@@ -288,8 +310,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 .leg-item { font-size: 0.67rem; color: var(--muted); font-weight: 300; display: flex; align-items: center; gap: 0.25rem; }
 
 /* sobrescritos vis-timeline */
-.vis-timeline { border: none !important; font-family: 'Source Sans 3', sans-serif !important; overflow: hidden !important; }
-.vis-panel.vis-left, .vis-panel.vis-right, .vis-panel.vis-center { overflow: hidden !important; }
+.vis-timeline { border: none !important; font-family: 'Source Sans 3', sans-serif !important; }
 .vis-time-axis .vis-text {
   font-family: 'Source Sans 3', sans-serif !important;
   font-size: 0.7rem !important;
@@ -358,38 +379,24 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 .tl-hint { font-size: 0.7rem; font-style: italic; color: var(--muted); margin-top: 0.6rem; font-weight: 300; }
 
 /* citação */
-.header-btns {
-  display: flex;
-  justify-content: center;
-  gap: 0.35rem;
-  margin-top: 0.3rem;
-  flex-wrap: wrap;
-}
-.btn-header {
+.cite-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.28rem;
   font-family: 'Source Sans 3', sans-serif;
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.14em;
   text-transform: uppercase;
-  text-decoration: none;
-  padding: 0.28rem 0.8rem;
-  border-radius: 3px;
-  border: 1px solid var(--rule);
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  transition: opacity 0.2s;
-  line-height: 1;
-}
-.btn-header:hover { opacity: 0.72; }
-.btn-header-dark {
-  background: #3a3020;
+  letter-spacing: 0.12em;
   color: var(--paper);
-  border-color: #3a3020;
+  background: var(--muted);
+  border: 1px solid var(--muted);
+  border-radius: 2px;
+  padding: 0.18rem 0.55rem;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
 }
+.cite-btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
 #cite-overlay {
   position: fixed; inset: 0; z-index: 1090;
@@ -451,36 +458,19 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 .cite-copy-btn:hover { background: #3a3228; }
 .cite-copy-btn.copied { background: var(--a3); }
 
-/* scroll horizontal */
-#view-table { overflow-x: auto; }
+/* scroll horizontal mobile */
+#view-table {
+  overflow-x: auto;
+}
 #tl-wrap {
   overflow-x: auto;
-  position: relative;
-}
-
-#timeline {
-  min-width: 900px;
-  overflow: hidden;
-}
-
-/* overlay transparente que captura toques no mobile ANTES da vis-timeline */
-#tl-touch-overlay {
-  display: none;
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  touch-action: pan-x;
-}
-
-@media (max-width: 900px) {
-  #tl-touch-overlay { display: block; }
-  #timeline { width: 2200px; }
 }
 
 /* responsivo */
 @media (max-width: 900px) {
   .page-header h2 { font-size: 1.3rem; }
   .view { padding-top: calc(var(--nav-h) + 4.5rem); }
+  #timeline { min-width: 900px; }
 }
 </style>
 </head>
@@ -500,10 +490,10 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 <div id="view-table" class="view active">
   <div class="page-header">
     <div class="header-eyebrow">Material de Aula produzido por Larissa Diniz Aguiar</div>
-    <div class="header-btns">
-      <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank" class="btn-header">LinkedIn</a>
-      <a href="http://lattes.cnpq.br/9454344975691413" target="_blank" class="btn-header">Lattes</a>
-      <button class="btn-header btn-header-dark" onclick="openCite()">Como Citar</button>
+    <div class="header-links">
+      <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank">LinkedIn</a>
+      <a href="http://lattes.cnpq.br/9454344975691413" target="_blank">Lattes</a>
+      <button class="cite-btn" onclick="openCite()">↳ Citar material</button>
     </div>
     <h2>FASES DA COOPERAÇÃO PARA O DESENVOLVIMENTO</h2>
     <div class="header-sub">Quadro analítico comparativo · 1945–2030</div>
@@ -868,10 +858,10 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 <div id="view-timeline" class="view">
   <div class="page-header">
     <div class="header-eyebrow">Material de Aula produzido por Larissa Diniz Aguiar</div>
-    <div class="header-btns">
-      <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank" class="btn-header">LinkedIn</a>
-      <a href="http://lattes.cnpq.br/9454344975691413" target="_blank" class="btn-header">Lattes</a>
-      <button class="btn-header btn-header-dark" onclick="openCite()">Como Citar</button>
+    <div class="header-links">
+      <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank">LinkedIn</a>
+      <a href="http://lattes.cnpq.br/9454344975691413" target="_blank">Lattes</a>
+      <button class="cite-btn" onclick="openCite()">↳ Citar material</button>
     </div>
     <h2>LINHA DO TEMPO INTERATIVA</h2>
     <div class="header-sub">Fases da cooperação (barras) e conjunturas críticas (eventos pontuais) &bull; Arraste para navegar &bull; Scroll para zoom &bull; Toque nos itens para detalhes</div>
@@ -879,7 +869,6 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
   <hr class="divider">
   <div id="tl-wrap">
     <div id="timeline"></div>
-    <div id="tl-touch-overlay"></div>
     <div id="tl-tooltip"></div>
   </div>
 
@@ -912,6 +901,11 @@ function switchView(v) {
 /* inicialização da linha do tempo */
 function initTimeline() {
   window._tlInit = true;
+
+  const isMobile = window.innerWidth <= 900;
+  if (isMobile) {
+    document.getElementById('timeline').style.minWidth = '900px';
+  }
 
   const groups = new vis.DataSet([
     { id: 1, content: 'Fases' },
@@ -971,7 +965,7 @@ function initTimeline() {
     { id: 'e4',  group: 2, start: '1955-04-18', content: 'Conferência de Bandung',
       detail: { title: 'Conferência de Bandung (1955)', body: '29 países afro-asiáticos reunidos na Indonésia proclamam os princípios do Não-Alinhamento. Emergência do Terceiro Mundo como ator coletivo nas relações internacionais. Pressão por uma cooperação não vinculada às lógicas da Guerra Fria.', tipo: 'Conjuntura' } },
     { id: 'e5',  group: 2, start: '1961-09-30', content: 'Criação do CAD/OCDE',
-      detail: { title: 'Criação do CAD/OCDE (1961)', body: 'O Comité de Ajuda ao Desenvolvimento da OCDE institucionaliza a coordenação entre doadores ocidentais, define o conceito de APD, estabelece as listas de países receptores e passa a publicar estatísticas comparadas.', tipo: 'Conjuntura' } },
+      detail: { title: 'Criação do CAD/OCDE (1961)', body: 'O Comité de Ajuda ao Desenvolvimento da OCDE institucionaliza a coordenação entre doadores ocidentais, define o conceito de APD, estabelece as listas de países receptores e passa a publicar estatísticas comparadas. Portugal é membro fundador.', tipo: 'Conjuntura' } },
     { id: 'e6',  group: 2, start: '1964-03-30', content: 'Criação da UNCTAD',
       detail: { title: 'UNCTAD (1964)', body: 'A Conferência das Nações Unidas sobre Comércio e Desenvolvimento surge como contrapeso do Sul Global às instituições de Bretton Woods. Demanda por comércio justo, preferências tarifárias e nova ordem económica internacional.', tipo: 'Conjuntura' } },
     { id: 'e7',  group: 2, start: '1971-08-15', content: 'Fim de Bretton Woods',
@@ -1055,18 +1049,11 @@ function initTimeline() {
     showCurrentTime: false,
     stack: true,
     selectable: true,
-    moveable: window.innerWidth > 900,
-    zoomable:  window.innerWidth > 900,
+    moveable: true,
+    zoomable: true,
   };
 
   const timeline = new vis.Timeline(container, items, groups, options);
-
-  /* no mobile, forçar vis a renderizar o canvas interno em largura fixa —
-     sem isso vis renderiza só o que cabe na tela e o restante fica vazio */
-  if (window.innerWidth <= 900) {
-    timeline.setOptions({ width: '2200px', moveable: false, zoomable: false });
-    document.getElementById('timeline').style.width = '2200px';
-  }
 
   /* tooltip ao selecionar */
   const tip = document.getElementById('tl-tooltip');
@@ -1080,35 +1067,6 @@ function initTimeline() {
     tip.innerHTML = `<strong>${d.title}</strong>${d.body}<br><em>${d.tipo}</em>`;
     tip.classList.add('show');
   });
-
-  /* ── scroll mobile via overlay ── */
-  (function() {
-    var overlay = document.getElementById('tl-touch-overlay');
-    var wrap    = document.getElementById('tl-wrap');
-    var startX, startLeft;
-
-    overlay.addEventListener('touchstart', function(e) {
-      startX    = e.touches[0].clientX;
-      startLeft = wrap.scrollLeft;
-    }, { passive: true });
-
-    overlay.addEventListener('touchmove', function(e) {
-      var dx = startX - e.touches[0].clientX;
-      wrap.scrollLeft = startLeft + dx;
-    }, { passive: true });
-
-    /* toque curto = clique: repassa o evento para a timeline */
-    var touchMoved = false;
-    overlay.addEventListener('touchstart',  function() { touchMoved = false; }, { passive: true });
-    overlay.addEventListener('touchmove',   function() { touchMoved = true;  }, { passive: true });
-    overlay.addEventListener('touchend', function(e) {
-      if (!touchMoved) {
-        var touch = e.changedTouches[0];
-        var el = document.elementFromPoint(touch.clientX, touch.clientY);
-        if (el && el.closest('.vis-item')) el.click();
-      }
-    });
-  })();
 
   container.addEventListener('click', function(e) {
     if (!e.target.closest('.vis-item')) {
@@ -1128,7 +1086,7 @@ function initTimeline() {
     tip.style.left = Math.max(8, left) + 'px';
     tip.style.top  = Math.max(8, top)  + 'px';
   });
-} /* fecha initTimeline */
+} // fecha initTimeline
 </script>
 
 <div id="cite-overlay" onclick="closeCite()"></div>
@@ -1140,7 +1098,7 @@ function initTimeline() {
 
   <div class="cite-format-label">APA / CFF</div>
   <div class="cite-text-box" id="cite-apa">
-    Aguiar, Larissa Diniz. (2026). <em>Fases da Cooperação para o Desenvolvimento</em> [Computer software]. https://github.com/aguiarcodes/fases-coop
+    Aguiar, Larissa Diniz. (2026). <em>Fases da Cooperação para o Desenvolvimento</em> [Computer software]. https://github.com/aguiarcodes/fases-cooperacao
   </div>
   <div class="cite-actions">
     <button class="cite-copy-btn" onclick="copyCite('apa', this)">Copiar</button>
@@ -1148,7 +1106,7 @@ function initTimeline() {
 
   <div class="cite-format-label" style="margin-top:0.8rem">ABNT</div>
   <div class="cite-text-box" id="cite-abnt">
-    AGUIAR, Larissa Diniz. <strong>Fases da Cooperação para o Desenvolvimento</strong>. 2026. Software. Disponível em: https://github.com/aguiarcodes/fases-coop
+    AGUIAR, Larissa Diniz. <strong>Fases da Cooperação para o Desenvolvimento</strong>. 2026. Software. Disponível em: https://github.com/aguiarcodes/fases-cooperacao
   </div>
   <div class="cite-actions">
     <button class="cite-copy-btn" onclick="copyCite('abnt', this)">Copiar</button>
@@ -1167,8 +1125,8 @@ function closeCite() {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCite(); });
 
 const CITE_TEXT = {
-  apa:  'Aguiar, Larissa Diniz. (2026). Fases da Cooperação para o Desenvolvimento [Computer software]. https://github.com/aguiarcodes/fases-coop',
-  abnt: 'AGUIAR, Larissa Diniz. Fases da Cooperação para o Desenvolvimento. 2026. Software. Disponível em: https://github.com/aguiarcodes/fases-coop'
+  apa:  'Aguiar, Larissa Diniz. (2026). Fases da Cooperação para o Desenvolvimento [Computer software]. https://github.com/aguiarcodes/fases-cooperacao',
+  abnt: 'AGUIAR, Larissa Diniz. Fases da Cooperação para o Desenvolvimento. 2026. Software. Disponível em: https://github.com/aguiarcodes/fases-cooperacao'
 };
 function copyCite(format, btn) {
   navigator.clipboard.writeText(CITE_TEXT[format]).then(() => {
