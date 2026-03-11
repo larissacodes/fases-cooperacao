@@ -460,18 +460,16 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 
 /* scroll horizontal mobile */
 #view-table { overflow-x: auto; }
-#tl-wrap { overflow-x: auto; }
-
-/* container da timeline — touch-action libera arraste horizontal no mobile */
-#timeline {
-  touch-action: pan-y;
+#tl-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* responsivo */
 @media (max-width: 900px) {
   .page-header h2 { font-size: 1.3rem; }
   .view { padding-top: calc(var(--nav-h) + 4.5rem); }
-  #timeline { min-width: 900px; }
+  #timeline { width: 2200px; }
 }
 </style>
 </head>
@@ -494,7 +492,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
     <div class="header-links">
       <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank">LinkedIn</a>
       <a href="http://lattes.cnpq.br/9454344975691413" target="_blank">Lattes</a>
-      <button class="cite-btn" onclick="openCite()">Citar material</button>
+      <button class="cite-btn" onclick="openCite()">↳ Citar material</button>
     </div>
     <h2>FASES DA COOPERAÇÃO PARA O DESENVOLVIMENTO</h2>
     <div class="header-sub">Quadro analítico comparativo · 1945–2030</div>
@@ -862,7 +860,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
     <div class="header-links">
       <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank">LinkedIn</a>
       <a href="http://lattes.cnpq.br/9454344975691413" target="_blank">Lattes</a>
-      <button class="cite-btn" onclick="openCite()">Citar material</button>
+      <button class="cite-btn" onclick="openCite()">↳ Citar material</button>
     </div>
     <h2>LINHA DO TEMPO INTERATIVA</h2>
     <div class="header-sub">Fases da cooperação (barras) e conjunturas críticas (eventos pontuais) &bull; Arraste para navegar &bull; Scroll para zoom &bull; Toque nos itens para detalhes</div>
@@ -1045,9 +1043,8 @@ function initTimeline() {
     showCurrentTime: false,
     stack: true,
     selectable: true,
-    moveable: true,
-    zoomable: true,
-    horizontalScroll: true,
+    moveable: window.innerWidth > 900,
+    zoomable: window.innerWidth > 900,
   };
 
   const timeline = new vis.Timeline(container, items, groups, options);
