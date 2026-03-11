@@ -9,27 +9,31 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/vis-timeline/7.7.2/vis-timeline-graph2d.min.css" rel="stylesheet">
 
 <style>
-/* variáveis */
+/* ================================================
+   DESIGN TOKENS
+   ================================================ */
 :root {
-  --ink:   #1a1814;
-  --paper: #f5f0e8;
-  --cream: #ede7d5;
-  --rule:  #b8a98a;
-  --muted: #6b6050;
-  --a1:    #8b3a2a;
-  --a2:    #2a5c7a;
-  --a3:    #3d6b3a;
-  --a4:    #7a4a1a;
-  --a5:    #4a2a7a;
-  --a6:    #2a6b5c;
-  --a7:    #7a3a5c;
-  --a8:    #1a4a6b;
-  --nav-h: 56px;
+  --ink:      #1a1814;
+  --paper:    #f5f0e8;
+  --cream:    #ede7d5;
+  --rule:     #b8a98a;
+  --muted:    #6b6050;
+  --a1:       #8b3a2a;   /* vermelho terracota  – fase 4 */
+  --a2:       #2a5c7a;   /* azul petróleo       – fase 1 */
+  --a3:       #3d6b3a;   /* verde sálvia        – fase 2 */
+  --a4:       #7a4a1a;   /* âmbar               – fase 3 */
+  --a5:       #4a2a7a;   /* violeta             – fase 5 */
+  --a6:       #2a6b5c;   /* verde-azulado       – fase 6 */
+  --nav-h:    56px;
 }
 
-/* reset e base */
+/* ================================================
+   RESET + BASE
+   ================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 html { scroll-behavior: smooth; }
+
 body {
   font-family: 'Source Sans 3', sans-serif;
   background: var(--paper);
@@ -37,7 +41,9 @@ body {
   min-height: 100vh;
 }
 
-/* nav flutuante */
+/* ================================================
+   FLOATING NAV
+   ================================================ */
 #floatnav {
   position: fixed;
   top: 1.2rem;
@@ -51,6 +57,7 @@ body {
   gap: 2px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.22);
 }
+
 .nav-btn {
   font-family: 'Source Sans 3', sans-serif;
   font-size: 0.72rem;
@@ -66,10 +73,19 @@ body {
   transition: background 0.25s, color 0.25s;
   white-space: nowrap;
 }
-.nav-btn.active { background: var(--paper); color: var(--ink); }
-.nav-btn:hover:not(.active) { color: rgba(245,240,232,0.85); }
 
-/* views */
+.nav-btn.active {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.nav-btn:hover:not(.active) {
+  color: rgba(245,240,232,0.85);
+}
+
+/* ================================================
+   VIEWS
+   ================================================ */
 .view {
   display: none;
   padding: calc(var(--nav-h) + 2.5rem) 2rem 3rem;
@@ -77,13 +93,17 @@ body {
   margin: 0 auto;
   animation: fadeIn 0.3s ease;
 }
+
 .view.active { display: block; }
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* cabeçalho compartilhado */
+/* ================================================
+   HEADER (shared)
+   ================================================ */
 .page-header {
   text-align: center;
   border-top: 3px solid var(--ink);
@@ -91,50 +111,29 @@ body {
   padding: 1.8rem 0 1.4rem;
   margin-bottom: 0.4rem;
 }
+
 .header-eyebrow {
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--ink);
-  margin-bottom: 0.3rem;
-}
-.header-links {
   font-size: 0.72rem;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.page-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.1rem;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.header-meta {
+  margin-top: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 300;
   color: var(--muted);
   letter-spacing: 0.06em;
-  margin-bottom: 1.1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-}
-.header-links a {
-  color: var(--muted);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  border: 1px solid var(--rule);
-  border-radius: 2px;
-  padding: 0.18rem 0.55rem;
-  transition: background 0.18s, color 0.18s, border-color 0.18s;
-}
-.header-links a:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-.page-header h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.75rem;
-  font-weight: 700;
-  line-height: 1.2;
-}
-.header-sub {
-  margin-top: 0.55rem;
-  font-size: 0.74rem;
-  font-weight: 400;
-  color: var(--muted);
-  letter-spacing: 0.05em;
   font-style: italic;
 }
 
@@ -144,22 +143,30 @@ hr.divider {
   margin: 0.4rem 0 2rem;
 }
 
-/* quadro analítico */
+/* ================================================
+   TABLE VIEW
+   ================================================ */
 .col-headers {
   display: grid;
-  grid-template-columns: 90px 145px 210px 210px 210px 210px;
+  grid-template-columns: 90px 145px 1fr 1fr 1fr 1fr;
   border-bottom: 2px solid var(--ink);
   padding-bottom: 0.4rem;
   margin-bottom: 0;
-  position: sticky;
-  top: calc(var(--nav-h) + 2.5rem);
-  background: var(--paper);
-  z-index: 10;
 }
+
+.col-h {
+  font-size: 0.64rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  padding: 0 0.6rem;
+}
+.col-h:first-child { padding-left: 0; }
 
 .phase-row {
   display: grid;
-  grid-template-columns: 90px 145px 210px 210px 210px 210px;
+  grid-template-columns: 90px 145px 1fr 1fr 1fr 1fr;
   border-bottom: 1px solid var(--cream);
   padding: 1.3rem 0;
   transition: background 0.18s;
@@ -175,7 +182,7 @@ hr.divider {
 }
 .cell:first-child { padding-left: 0; }
 
-/* período */
+/* period */
 .cell-period {
   font-family: 'Playfair Display', serif;
   font-weight: 700;
@@ -193,7 +200,7 @@ hr.divider {
   margin-top: 0.2rem;
 }
 
-/* paradigma */
+/* paradigm */
 .paradigm-tag {
   display: inline-block;
   font-family: 'Playfair Display', serif;
@@ -216,12 +223,12 @@ hr.divider {
   border: none;
 }
 
-/* conjuntura */
+/* conjuncture */
 .cj { display: flex; align-items: baseline; gap: 0.3rem; margin-bottom: 0.3rem; }
 .cj-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 0.32rem; }
 .cj-yr  { font-weight: 600; font-size: 0.7rem; }
 
-/* lista */
+/* list */
 ul.cl { list-style: none; }
 ul.cl li {
   font-size: 0.77rem;
@@ -233,7 +240,7 @@ ul.cl li {
 }
 ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rule); }
 
-/* crítica */
+/* critique */
 .crit {
   font-size: 0.76rem;
   line-height: 1.45;
@@ -243,74 +250,67 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 }
 .crit::before { content: '↯ '; font-style: normal; }
 
-/* temas de cor por fase */
-.p1 .cell-period, .p1 .period-label, .p1 .crit { color: var(--a2); }
+/* phase colour themes */
+.p1 .cell-period,.p1 .period-label,.p1 .crit { color: var(--a2); }
 .p1 .paradigm-tag { border-color: var(--a2); color: var(--a2); }
 .p1 .cj-dot { background: var(--a2); }
 
-.p2 .cell-period, .p2 .period-label, .p2 .crit { color: var(--a3); }
+.p2 .cell-period,.p2 .period-label,.p2 .crit { color: var(--a3); }
 .p2 .paradigm-tag { border-color: var(--a3); color: var(--a3); }
 .p2 .cj-dot { background: var(--a3); }
 
-.p3 .cell-period, .p3 .period-label, .p3 .crit { color: var(--a4); }
+.p3 .cell-period,.p3 .period-label,.p3 .crit { color: var(--a4); }
 .p3 .paradigm-tag { border-color: var(--a4); color: var(--a4); }
 .p3 .cj-dot { background: var(--a4); }
 
-.p4 .cell-period, .p4 .period-label, .p4 .crit { color: var(--a1); }
+.p4 .cell-period,.p4 .period-label,.p4 .crit { color: var(--a1); }
 .p4 .paradigm-tag { border-color: var(--a1); color: var(--a1); }
 .p4 .cj-dot { background: var(--a1); }
 
-.p5 .cell-period, .p5 .period-label, .p5 .crit { color: var(--a5); }
+.p5 .cell-period,.p5 .period-label,.p5 .crit { color: var(--a5); }
 .p5 .paradigm-tag { border-color: var(--a5); color: var(--a5); }
 .p5 .cj-dot { background: var(--a5); }
 
-.p6 .cell-period, .p6 .period-label, .p6 .crit { color: var(--a6); }
+.p6 .cell-period,.p6 .period-label,.p6 .crit { color: var(--a6); }
 .p6 .paradigm-tag { border-color: var(--a6); color: var(--a6); }
 .p6 .cj-dot { background: var(--a6); }
 
-.p7 .cell-period, .p7 .period-label, .p7 .crit { color: var(--a7); }
-.p7 .paradigm-tag { border-color: var(--a7); color: var(--a7); }
-.p7 .cj-dot { background: var(--a7); }
-
-.p8 .cell-period, .p8 .period-label, .p8 .crit { color: var(--a8); }
-.p8 .paradigm-tag { border-color: var(--a8); color: var(--a8); }
-.p8 .cj-dot { background: var(--a8); }
-
-/* rodapé */
+/* footer */
 .page-footer {
   margin-top: 1.8rem;
-  border-top: 1px solid var(--rule);
-  padding-top: 1rem;
-}
-.footer-refs {
-  font-size: 0.66rem;
-  font-weight: 400;
-  color: #3a3228;
-  line-height: 1.75;
-  margin-bottom: 0.9rem;
-}
-.footer-refs strong {
-  font-weight: 600;
-  color: var(--ink);
-  display: block;
-  margin-bottom: 0.45rem;
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.footer-refs p { margin-bottom: 0.25rem; }
-.footer-refs em { font-style: italic; }
-.footer-bottom {
   display: flex;
-  justify-content: flex-end;
-  border-top: 1px solid var(--cream);
-  padding-top: 0.55rem;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 0.9rem;
 }
+.footer-txt { font-size: 0.68rem; font-weight: 300; color: var(--muted); line-height: 1.6; }
+.footer-txt strong { font-weight: 600; color: var(--ink); }
 .legend { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; }
 .leg-item { font-size: 0.67rem; color: var(--muted); font-weight: 300; display: flex; align-items: center; gap: 0.25rem; }
 
-/* sobrescritos vis-timeline */
-.vis-timeline { border: none !important; font-family: 'Source Sans 3', sans-serif !important; }
+/* ================================================
+   TIMELINE VIEW
+   ================================================ */
+#tl-wrap { position: relative; }
+
+#timeline {
+  width: 100%;
+  height: 540px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: #faf7f0;
+  font-family: 'Source Sans 3', sans-serif;
+  touch-action: pan-y;
+}
+
+/* override vis-timeline styles */
+.vis-timeline {
+  border: none !important;
+  font-family: 'Source Sans 3', sans-serif !important;
+}
 .vis-time-axis .vis-text {
   font-family: 'Source Sans 3', sans-serif !important;
   font-size: 0.7rem !important;
@@ -326,8 +326,13 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
   border-width: 2px !important;
   cursor: pointer !important;
 }
-.vis-item.vis-selected { filter: brightness(1.12) !important; box-shadow: 0 2px 12px rgba(0,0,0,0.18) !important; }
-.vis-item.vis-range .vis-item-content { padding: 3px 8px !important; }
+.vis-item.vis-selected {
+  filter: brightness(1.12) !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18) !important;
+}
+.vis-item.vis-range .vis-item-content {
+  padding: 3px 8px !important;
+}
 .vis-label {
   font-family: 'Source Sans 3', sans-serif !important;
   font-size: 0.68rem !important;
@@ -342,9 +347,9 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 .vis-grid.vis-vertical { border-color: rgba(184,169,138,0.3) !important; }
 .vis-current-time { background: var(--a1) !important; width: 1px !important; }
 
-/* tooltip da linha do tempo */
+/* tooltip */
 #tl-tooltip {
-  position: fixed;
+  position: absolute;
   max-width: 300px;
   background: var(--ink);
   color: var(--paper);
@@ -363,7 +368,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 #tl-tooltip strong { font-weight: 600; display: block; margin-bottom: 0.25rem; font-size: 0.8rem; }
 #tl-tooltip em { color: rgba(245,240,232,0.6); font-style: normal; font-size: 0.68rem; }
 
-/* legenda da linha do tempo */
+/* legend swatches */
 .tl-legend {
   display: flex;
   flex-wrap: wrap;
@@ -375,117 +380,36 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
   border-radius: 4px;
 }
 .tl-leg-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; font-weight: 300; color: var(--ink); }
-.tl-swatch { width: 14px; height: 14px; border-radius: 2px; flex-shrink: 0; border: 2px solid rgba(0,0,0,0.12); }
-.tl-hint { font-size: 0.7rem; font-style: italic; color: var(--muted); margin-top: 0.6rem; font-weight: 300; }
+.tl-swatch {
+  width: 14px; height: 14px; border-radius: 2px; flex-shrink: 0;
+  border: 2px solid rgba(0,0,0,0.12);
+}
+.tl-hint {
+  font-size: 0.7rem;
+  font-style: italic;
+  color: var(--muted);
+  margin-top: 0.6rem;
+  font-weight: 300;
+}
 
-/* citação */
-.cite-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.28rem;
-  font-family: 'Source Sans 3', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--paper);
-  background: var(--muted);
-  border: 1px solid var(--muted);
-  border-radius: 2px;
-  padding: 0.18rem 0.55rem;
-  cursor: pointer;
-  transition: background 0.18s, color 0.18s, border-color 0.18s;
-}
-.cite-btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-
-#cite-overlay {
-  position: fixed; inset: 0; z-index: 1090;
-  background: rgba(26,24,20,0.38);
-  opacity: 0; pointer-events: none; transition: opacity 0.22s;
-}
-#cite-overlay.show { opacity: 1; pointer-events: all; }
-
-#cite-panel {
-  position: fixed; top: 50%; left: 50%;
-  transform: translate(-50%, -50%) scale(0.97);
-  z-index: 1100;
-  width: min(500px, 92vw);
-  background: var(--paper);
-  border: 1.5px solid var(--ink);
-  border-radius: 4px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.22);
-  padding: 1.4rem 1.5rem 1.2rem;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.22s, transform 0.22s;
-}
-#cite-panel.show { opacity: 1; pointer-events: all; transform: translate(-50%, -50%) scale(1); }
-
-.cite-panel-header {
-  display: flex; justify-content: space-between; align-items: baseline;
-  border-bottom: 1px solid var(--rule);
-  padding-bottom: 0.55rem; margin-bottom: 0.9rem;
-}
-.cite-panel-title {
-  font-size: 0.63rem; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted);
-}
-.cite-close {
-  background: none; border: none; font-size: 1rem;
-  color: var(--muted); cursor: pointer; transition: color 0.15s; line-height: 1;
-}
-.cite-close:hover { color: var(--ink); }
-
-.cite-format-label {
-  font-size: 0.6rem; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.13em;
-  color: var(--muted); margin-bottom: 0.28rem;
-}
-.cite-text-box {
-  background: var(--cream); border: 1px solid var(--rule); border-radius: 3px;
-  padding: 0.7rem 0.8rem;
-  font-size: 0.79rem; font-weight: 400; line-height: 1.65;
-  color: var(--ink); margin-bottom: 0.6rem; word-break: break-word;
-}
-.cite-actions { display: flex; justify-content: flex-end; gap: 0.5rem; }
-.cite-copy-btn {
-  font-family: 'Source Sans 3', sans-serif;
-  font-size: 0.68rem; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.12em;
-  background: var(--ink); color: var(--paper);
-  border: none; border-radius: 2px; padding: 0.38rem 0.85rem;
-  cursor: pointer; transition: background 0.18s;
-}
-.cite-copy-btn:hover { background: #3a3228; }
-.cite-copy-btn.copied { background: var(--a3); }
-
-/* scroll horizontal mobile */
-#view-table {
-  overflow-x: auto;
-}
-#tl-wrap {
-  overflow-x: auto;
-}
-  
-#tl-overlay { display: none; }
-
-/* responsivo */
+/* ================================================
+   RESPONSIVE
+   ================================================ */
 @media (max-width: 900px) {
-  .page-header h2 { font-size: 1.3rem; }
-  .view { padding-top: calc(var(--nav-h) + 4.5rem); }
-  #timeline { min-width: 900px; }
-  #tl-wrap { position: relative; }
-  #tl-overlay {
-    display: block;
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 540px;
-    z-index: 50;
+  .col-headers, .phase-row {
+    grid-template-columns: 75px 110px 1fr;
   }
+  .cell:nth-child(n+4) { display: none; }
+  .col-h:nth-child(n+4) { display: none; }
+  .page-header h1 { font-size: 1.5rem; }
 }
 </style>
 </head>
 <body>
 
+<!-- ============================================================
+     FLOATING NAV
+     ============================================================ -->
 <nav id="floatnav" role="navigation" aria-label="Alternar visualização">
   <button class="nav-btn active" onclick="switchView('table')" id="btn-table">
     ☰&nbsp; Quadro Analítico
@@ -495,20 +419,21 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
   </button>
 </nav>
 
-
-<!-- quadro analítico -->
+<!-- ============================================================
+     VIEW 1 — QUADRO
+     ============================================================ -->
 <div id="view-table" class="view active">
   <div class="page-header">
-    <div class="header-eyebrow">Material de Aula produzido por Larissa Diniz Aguiar</div>
-    <div class="header-links">
-      <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank">LinkedIn</a>
-      <a href="http://lattes.cnpq.br/9454344975691413" target="_blank">Lattes</a>
-      <button class="cite-btn" onclick="openCite()">Citar material</button>
-    </div>
-    <h2>FASES DA COOPERAÇÃO PARA O DESENVOLVIMENTO</h2>
-    <div class="header-sub">Quadro analítico comparativo · 1945–2030</div>
+   <div class="header-eyebrow" style="font-weight:600; font-size:0.95rem; letter-spacing:0.15em;">Material de Aula produzido por Larissa Diniz Aguiar</div>
+<div style="margin-top:0.4rem; font-size:0.68rem; font-weight:300; letter-spacing:0.1em; color:var(--muted);">
+  <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank" style="color:var(--muted); text-decoration:none; font-weight:600; font-size:0.95rem; text-transform:uppercase;">LinkedIn</a>
+  &nbsp;&bull;&nbsp;
+  <a href="http://lattes.cnpq.br/9454344975691413" target="_blank" style="color:var(--muted); text-decoration:none; font-weight:600; font-size:0.95rem; text-transform:uppercase;">Lattes</a>
+</div>
+    <h3>FASES DA COOPERAÇÃO PARA O DESENVOLVIMENTO</h3>
+    <div class="header-meta">Baseado em: Afonso, M. M. "A Evolução da Cooperação para o Desenvolvimento". In: Afonso; Fernandes (orgs.), <em>Introdução à Cooperação para o Desenvolvimento</em>. Lisboa: Fórum DC / OIKOS / IMVF, 2005.</div>
   </div>
-  <hr class="divider">
+   <hr class="divider">
 
   <div class="col-headers">
     <div class="col-h">Período</div>
@@ -519,7 +444,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
     <div class="col-h">Críticas e Limites</div>
   </div>
 
-  <!-- fase 1 -->
+  <!-- FASE 1 -->
   <div class="phase-row p1">
     <div class="cell cell-period">
       <span class="period-year">1945–1960</span>
@@ -559,7 +484,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
     </div>
   </div>
 
-  <!-- fase 2 -->
+  <!-- FASE 2 -->
   <div class="phase-row p2">
     <div class="cell cell-period">
       <span class="period-year">1960–1973</span>
@@ -599,7 +524,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
     </div>
   </div>
 
-  <!-- fase 3 -->
+  <!-- FASE 3 -->
   <div class="phase-row p3">
     <div class="cell cell-period">
       <span class="period-year">1973–1979</span>
@@ -639,7 +564,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
     </div>
   </div>
 
-  <!-- fase 4 -->
+  <!-- FASE 4 -->
   <div class="phase-row p4">
     <div class="cell cell-period">
       <span class="period-year">1980–1989</span>
@@ -679,7 +604,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
     </div>
   </div>
 
-  <!-- fase 5 -->
+  <!-- FASE 5 -->
   <div class="phase-row p5">
     <div class="cell cell-period">
       <span class="period-year">1990–2000</span>
@@ -694,7 +619,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
       <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1989–91</span> — Colapso da URSS: países ex-comunistas tornam-se novos receptores de APD</span></div>
       <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1994</span> — Genocídio no Ruanda: crise da ajuda humanitária e debate sobre intervenção</span></div>
       <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1996</span> — Iniciativa HIPC (BM/FMI): primeiro alívio sistemático da dívida dos países pobres</span></div>
-      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1997</span> — APD atinge mínimo histórico (43,2 bi USD); crise financeira asiática</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1997</span> — APD atinge mínimo histórico (43,2 biliões USD); crise financeira asiática</span></div>
       <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">1999</span> — HIPC reforçada; surgem os PRSP; Stiglitz critica abertamente o FMI</span></div>
     </div>
     <div class="cell">
@@ -707,8 +632,9 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
     </div>
     <div class="cell">
       <ul class="cl">
-        <li>HIPC como mecanismo multilateral de alívio da dívida</li>
-        <li>Crescimento das OSC como interlocutores e implementadores da ajuda</li>
+        <li>SWAp (Abordagem Sectorial): instrumento de coordenação</li>
+        <li>Iniciativa HIPC e HIPC Reforçada: alívio da dívida multilateral</li>
+        <li>IDH (PNUD, desde 1990): medida alternativa ao PIB per capita</li>
         <li>Ajuda humanitária em expansão (Ruanda, Bósnia, Kosovo, Timor)</li>
       </ul>
     </div>
@@ -719,7 +645,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
     </div>
   </div>
 
-  <!-- fase 6 -->
+  <!-- FASE 6 -->
   <div class="phase-row p6">
     <div class="cell cell-period">
       <span class="period-year">2000–2005</span>
@@ -731,7 +657,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
       </span>
     </div>
     <div class="cell">
-      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2000</span> — Cúpula do Milênio: aprovação dos ODM (8 metas, prazo 2015)</span></div>
+      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2000</span> — Cúpula do Milénio: aprovação dos ODM (8 metas, prazo 2015)</span></div>
       <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2001</span> — Atentados de 11 de Setembro: segurança entra na agenda da cooperação</span></div>
       <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2002</span> — Conferência de Monterrey: "Consenso de Monterrey" sobre financiamento do desenvolvimento</span></div>
       <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2003</span> — Declaração de Roma sobre Harmonização: doadores coordenam procedimentos</span></div>
@@ -760,131 +686,37 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
     </div>
   </div>
 
-  <!-- fase 7 -->
-  <div class="phase-row p7">
-    <div class="cell cell-period">
-      <span class="period-year">2005–2015</span>
-      <span class="period-label">Novos Atores e Eficácia Plena</span>
-    </div>
-    <div class="cell">
-      <span class="paradigm-tag">Eficácia da cooperação: alinhamento, harmonização e responsabilidade mútua
-        <span class="paradigm-sub">OCDE/CAD; GPEDC; Cooperação Sul-Sul</span>
-      </span>
-    </div>
-    <div class="cell">
-      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2005</span> — Declaração de Paris: cinco princípios de eficácia (ownership, alinhamento, harmonização, gestão por resultados, responsabilidade mútua)</span></div>
-      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2008</span> — Agenda de Acra: aprofunda Paris e amplia voz dos países receptores; coincide com a crise financeira global (falência do Lehman Brothers)</span></div>
-      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2011</span> — Parceria de Busan: transição de eficácia da ajuda para eficácia do desenvolvimento; criação da GPEDC</span></div>
-      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2013</span> — 1ª Reunião de Alto Nível da GPEDC (Cidade do México): monitoramento dos compromissos de Busan</span></div>
-    </div>
-    <div class="cell">
-      <ul class="cl">
-        <li>Ownership como princípio operacional com indicadores mensuráveis, não apenas retórico</li>
-        <li>Cooperação Sul-Sul (CSS) e triangular ganham reconhecimento formal na arquitetura internacional</li>
-        <li>Novos doadores emergentes (Brasil, China, Índia, África do Sul) desafiam o monopólio do CAD/OCDE</li>
-        <li>IDE e remessas superam a APD na maioria dos países em desenvolvimento</li>
-      </ul>
-    </div>
-    <div class="cell">
-      <ul class="cl">
-        <li>GPEDC (2011): plataforma multiator com doadores tradicionais, emergentes, sociedade civil e setor privado</li>
-        <li>IATI (Iniciativa de Transparência Internacional da Ajuda, 2008): padrão aberto para publicação de dados de APD</li>
-        <li>CSS como instrumento de soft power dos emergentes (Ayllón Pino, 2011)</li>
-        <li>Blended finance: combinação de fundos públicos e privados para mobilizar investimento</li>
-      </ul>
-    </div>
-    <div class="cell">
-      <div class="crit">Apenas 1 dos 13 indicadores de Paris atingiu a meta estipulada para 2010 (OCDE, 2011)</div>
-      <div class="crit">CSS invocada como horizontal e não-condicional, mas instrumentalizada pela política exterior dos doadores emergentes (Ayllón Pino, 2011)</div>
-      <div class="crit">Tensão entre aid effectiveness e development effectiveness: quem define os critérios de sucesso?</div>
-      <div class="crit">BRICS e outros emergentes participam da GPEDC sem aderir plenamente às normas do CAD</div>
-    </div>
-  </div>
-
-  <!-- fase 8 -->
-  <div class="phase-row p8">
-    <div class="cell cell-period">
-      <span class="period-year">2015–2030</span>
-      <span class="period-label">Agenda 2030</span>
-    </div>
-    <div class="cell">
-      <span class="paradigm-tag">Desenvolvimento sustentável universal: 17 ODS como quadro integrado e indivisível
-        <span class="paradigm-sub">ONU (Resolução 70/1); ODS 17 como eixo de parcerias e meios de implementação</span>
-      </span>
-    </div>
-    <div class="cell">
-      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2015</span> — Agenda 2030: aprovação pelos 193 Estados-membros da ONU dos 17 ODS e 169 metas, com prazo até 2030 (ONU, 2015)</span></div>
-      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2015</span> — Agenda de Ação de Adis Abeba: arquitetura de financiamento para o desenvolvimento sustentável</span></div>
-      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2015</span> — Acordo de Paris sobre mudanças climáticas: vincula cooperação ambiental à agenda de desenvolvimento (ODS 13)</span></div>
-      <div class="cj"><div class="cj-dot"></div><span><span class="cj-yr">2020</span> — Pandemia de COVID-19: aprofunda retrocessos nos ODS 2, 3, 8 e 16; agrava assimetrias Norte-Sul</span></div>
-    </div>
-    <div class="cell">
-      <ul class="cl">
-        <li>Universalidade: os 17 ODS aplicam-se a todos os países, superando a dicotomia doador-receptor</li>
-        <li>Indivisibilidade: ODS concebidos como interdependentes — avanços em um podem implicar retrocesso em outros</li>
-        <li>Beyond aid: cooperação abrange APD, IDE, remessas, tributação internacional e financiamento climático</li>
-        <li>ODS 17 como eixo: parcerias multi-ator como condição de implementação dos demais objetivos</li>
-      </ul>
-    </div>
-    <div class="cell">
-      <ul class="cl">
-        <li>Relatório de Desenvolvimento Sustentável (SDG TC): monitoramento anual dos indicadores desde 2015</li>
-        <li>Revisões Nacionais Voluntárias (VNR): prestação de contas ao Fórum Político de Alto Nível (HLPF/ONU)</li>
-        <li>GPEDC alinhada à Agenda 2030 após 2015; monitoramento via indicador ODS 17.16</li>
-        <li>CSS e cooperação triangular como mecanismos centrais para países do Sul Global</li>
-      </ul>
-    </div>
-    <div class="cell">
-      <div class="crit">Nenhum país da OCDE apresentou correlações exclusivamente positivas entre os ODS no período 2000–2023 (Pereira; D'Agostini; Alonso, 2026)</div>
-      <div class="crit">ODS 2 (fome zero), 8 (trabalho) e 16 (paz e justiça) concentram os maiores retrocessos nos países da OCDE (Pereira; D'Agostini; Alonso, 2026)</div>
-      <div class="crit">Prazo 2030 insuficiente para países em desenvolvimento; heterogeneidade inviabiliza soluções uniformes</div>
-      <div class="crit">ODS 9 (industrialização) foi o principal avanço em 42 dos 49 países analisados, enquanto ODS 6 (saneamento) registrou os maiores retrocessos absolutos (Pereira; D'Agostini; Alonso, 2026)</div>
-    </div>
-  </div>
-
   <div class="page-footer">
-    <div class="footer-refs">
-      <strong>Referências</strong>
-      <p>AFONSO, Maria Manuela. A Evolução da Cooperação para o Desenvolvimento. In: AFONSO, Maria Manuela; FERNANDES, António José (orgs.). <em>Introdução à Cooperação para o Desenvolvimento</em>. Lisboa: Fórum DC / OIKOS / IMVF, 2005.</p>
-      <p>AYLLÓN, Bruno. O Sistema Internacional de Cooperação ao Desenvolvimento e seu estudo nas Relações Internacionais: a evolução histórica e as dimensões teóricas. <em>Revista de Economia &amp; Relações Internacionais</em>, São Paulo, v. 5, n. 8, p. 5-23, jan. 2006.</p>
-      <p>AYLLÓN PINO, Bruno. Agentes transformadores da cooperação para o desenvolvimento: poderes emergentes e cooperação Sul-Sul. <em>Relaciones Internacionales</em>, Madrid, n. 40, p. 97-119, 2011.</p>
-      <p>OCDE. <em>Declaração de Paris sobre Eficácia da Ajuda</em>. Paris: OCDE, 2005. DOI: 10.1787/9789264098084-en.</p>
-      <p>OCDE. <em>Agenda de Acra para a Acção</em>. Acra: OCDE/CAD, 2008. Disponível em: https://www.effectivecooperation.org/content/paris-declaration-aid-effectiveness-and-accra-agenda-action.</p>
-      <p>OCDE. <em>Parceria de Busan para uma Cooperação para o Desenvolvimento Eficaz</em>. Busan: OCDE, 2011. DOI: 10.1787/54de7baa-en.</p>
-      <p>ORGANIZAÇÃO DAS NAÇÕES UNIDAS. Resolução 70/1: Transformando Nosso Mundo: a Agenda 2030 para o Desenvolvimento Sustentável. Nova York: ONU, 25 set. 2015.</p>
-      <p>PEREIRA, Máriam Trierveiler; D'AGOSTINI, Luciano Luiz Manarin; ALONSO, Joaquim Mamede. Análise histórica (2000 a 2023) da correlação entre os desempenhos dos Objetivos de Desenvolvimento Sustentável (ODS) dos países da Organização para a Cooperação e Desenvolvimento Econômico (OCDE). <em>SciELO Preprints</em>, 2026. DOI: 10.1590/SciELOPreprints.14677.</p>
+    <div class="footer-txt">
+      <strong>Fonte primária:</strong> Afonso, Maria Manuela. "A Evolução da Cooperação para o Desenvolvimento."<br> 
+      In: Afonso; Fernandes (orgs.). <em>Introdução à Cooperação para o Desenvolvimento</em>. Lisboa: Fórum DC / OIKOS / IMVF, 2005.<br>
+      <strong>Nota:</strong> Conjunturas críticas incorporam dados históricos de fontes complementares (CAD/OCDE, FMI, BM, ONU).
     </div>
-    <div class="footer-bottom">
-      <div class="legend">
-        <div class="leg-item"><span style="font-size:0.9rem">↯</span> Crítica ou limite</div>
-        <div class="leg-item"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ink)"></span> Conjuntura crítica</div>
-      </div>
+    <div class="legend">
+      <div class="leg-item"><span style="font-size:0.9rem">↯</span> Crítica ou limite</div>
+      <div class="leg-item"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ink)"></span> Conjuntura crítica</div>
     </div>
   </div>
-</div>
+</div><!-- /view-table -->
 
 
-<!-- linha do tempo -->
+<!-- ============================================================
+     VIEW 2 — LINHA DO TEMPO
+     ============================================================ -->
 <div id="view-timeline" class="view">
   <div class="page-header">
-    <div class="header-eyebrow">Material de Aula produzido por Larissa Diniz Aguiar</div>
-    <div class="header-links">
-      <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank">LinkedIn</a>
-      <a href="http://lattes.cnpq.br/9454344975691413" target="_blank">Lattes</a>
-      <button class="cite-btn" onclick="openCite()">Citar material</button>
-    </div>
-    <h2>LINHA DO TEMPO INTERATIVA</h2>
-    <div class="header-sub">Fases da cooperação (barras) e conjunturas críticas (eventos pontuais) &bull; Arraste para navegar &bull; Scroll para zoom &bull; Toque nos itens para detalhes</div>
+    <div class="header-eyebrow" style="font-weight:600; font-size:0.85rem; letter-spacing:0.15em;">Material de Aula produzido por Larissa Diniz Aguiar</div>
+<div style="margin-top:0.4rem; font-size:0.68rem; font-weight:300; letter-spacing:0.1em; color:var(--muted);">
+  <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank" style="color:var(--muted); text-decoration:none; font-weight:600; font-size:0.95rem; text-transform:uppercase;">LinkedIn</a>
+  &nbsp;&bull;&nbsp;
+  <a href="http://lattes.cnpq.br/9454344975691413" target="_blank" style="color:var(--muted); text-decoration:none; font-weight:600; font-size:0.95rem; text-transform:uppercase;">Lattes</a>
+</div>
+    <h3>LINHA DO TEMPO INTERATIVA</h3>
+    <div class="header-meta">Fases da cooperação (barras) e conjunturas críticas (eventos pontuais). Arraste para navegar &bull; Scroll para zoom &bull; Clique nos itens para detalhes.</div>
   </div>
   <hr class="divider">
   <div id="tl-wrap">
     <div id="timeline"></div>
-    <div id="tl-wrap">
-  <div id="tl-wrap">
-  <div id="timeline"></div>
-  <div id="tl-overlay"></div>
-  <div id="tl-tooltip"></div>
-</div>
     <div id="tl-tooltip"></div>
   </div>
 
@@ -895,17 +727,18 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
     <div class="tl-leg-item"><div class="tl-swatch" style="background:rgba(139,58,42,0.18);border-color:#8b3a2a"></div> Fase 4 — Ajustamento (1980–89)</div>
     <div class="tl-leg-item"><div class="tl-swatch" style="background:rgba(74,42,122,0.18);border-color:#4a2a7a"></div> Fase 5 — Pós-Guerra Fria (1990–00)</div>
     <div class="tl-leg-item"><div class="tl-swatch" style="background:rgba(42,107,92,0.18);border-color:#2a6b5c"></div> Fase 6 — Eficácia (2000–05)</div>
-    <div class="tl-leg-item"><div class="tl-swatch" style="background:rgba(122,58,92,0.18);border-color:#7a3a5c"></div> Fase 7 — Novos Atores (2005–15)</div>
-    <div class="tl-leg-item"><div class="tl-swatch" style="background:rgba(26,74,107,0.18);border-color:#1a4a6b"></div> Fase 8 — Agenda 2030 (2015–30)</div>
     <div class="tl-leg-item"><div class="tl-swatch" style="background:#c8b89a;border-color:#7a6a50"></div> Conjuntura crítica</div>
   </div>
-  <div class="tl-hint">* Toque ou clique em qualquer evento ou fase para ver descrição detalhada.</div>
-</div>
+  <div class="tl-hint">* Clique em qualquer evento ou fase para ver descrição detalhada.</div>
+</div><!-- /view-timeline -->
 
 
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-timeline/7.7.2/vis-timeline-graph2d.min.js"></script>
 <script>
-/* alternância de views */
+/* ---- VIEW SWITCH ---- */
 function switchView(v) {
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
@@ -914,11 +747,9 @@ function switchView(v) {
   if (v === 'timeline' && !window._tlInit) initTimeline();
 }
 
-/* inicialização da linha do tempo */
+/* ---- TIMELINE DATA ---- */
 function initTimeline() {
   window._tlInit = true;
-
-  const isMobile = window.innerWidth <= 900;
 
   const groups = new vis.DataSet([
     { id: 1, content: 'Fases' },
@@ -955,16 +786,6 @@ function initTimeline() {
       content: 'Fase 6 — Eficácia e Parceria',
       color: { background: 'rgba(42,107,92,0.18)', border: '#2a6b5c' },
       detail: { title: 'Fase 6 — Eficácia e Parceria (2000–2005)', body: 'ODM como quadro de referência único. Ownership, parceria e harmonização. Consenso de Monterrey (2002) e Declaração de Roma (2003). Ambiguidade pós-11/Set: APD cresce, mas parte é desviada para objetivos securitários.', tipo: 'Fase' }
-    },
-    { id: 'p7', group: 1, start: '2005-03-01', end: '2015-01-01',
-      content: 'Fase 7 — Novos Atores',
-      color: { background: 'rgba(122,58,92,0.18)', border: '#7a3a5c' },
-      detail: { title: 'Fase 7 — Novos Atores e Eficácia Plena (2005–2015)', body: 'Declaração de Paris (2005): cinco princípios operacionais de eficácia. Agenda de Acra (2008) aprofunda Paris e amplia voz dos receptores. Parceria de Busan (2011): transição de aid effectiveness para development effectiveness; criação da GPEDC. CSS e doadores emergentes redefinem a arquitetura.', tipo: 'Fase' }
-    },
-    { id: 'p8', group: 1, start: '2015-09-01', end: '2030-12-31',
-      content: 'Fase 8 — Agenda 2030',
-      color: { background: 'rgba(26,74,107,0.18)', border: '#1a4a6b' },
-      detail: { title: 'Fase 8 — Agenda 2030 e ODS (2015–2030)', body: 'Aprovação dos 17 ODS e 169 metas pela AGNU em setembro de 2015. Universalidade: todos os países como sujeitos. Interdependência: avanços em um ODS podem ocorrer em detrimento de outros. Nenhum país da OCDE apresentou correlações exclusivamente positivas entre os ODS no período 2000–2023 (Pereira; D\'Agostini; Alonso, 2026).', tipo: 'Fase' }
     }
   ];
 
@@ -999,179 +820,82 @@ function initTimeline() {
       detail: { title: 'Iniciativa HIPC (1996)', body: 'O BM e o FMI lançam a Heavily Indebted Poor Countries Initiative: primeiro mecanismo sistemático de alívio da dívida multilateral para 42 países pobres muito endividados. Reforçada em 1999 com maiores reduções e condicionalidade via PRSP.', tipo: 'Conjuntura' } },
     { id: 'e15', group: 2, start: '1997-07-02', content: 'Crise Asiática',
       detail: { title: 'Crise Financeira Asiática e Mínimo da APD (1997)', body: 'A crise cambial que começa na Tailândia e se alastra à Coreia do Sul, Indonésia e outros países asiáticos questiona o modelo do Consenso de Washington. No mesmo ano, a APD mundial atinge seu mínimo histórico de 43,2 biliões de dólares.', tipo: 'Conjuntura' } },
-    { id: 'e16', group: 2, start: '2000-09-08', content: 'Cúpula do Milênio / ODM',
-      detail: { title: 'Cúpula do Milênio e Objetivos de Desenvolvimento do Milênio (2000)', body: '189 países adotam os ODM: 8 metas com indicadores mensuráveis e prazo de 2015. Tornam-se o quadro de referência unificado para a cooperação para o desenvolvimento durante 15 anos, incluindo metas de redução da pobreza extrema, mortalidade infantil, educação e paridade de género.', tipo: 'Conjuntura' } },
+    { id: 'e16', group: 2, start: '2000-09-08', content: 'Cúpula do Milénio / ODM',
+      detail: { title: 'Cúpula do Milénio e Objetivos de Desenvolvimento do Milénio (2000)', body: '189 países adotam os ODM: 8 metas com indicadores mensuráveis e prazo de 2015. Tornam-se o quadro de referência unificado para a cooperação para o desenvolvimento durante 15 anos, incluindo metas de redução da pobreza extrema, mortalidade infantil, educação e paridade de género.', tipo: 'Conjuntura' } },
     { id: 'e17', group: 2, start: '2001-09-11', content: '11 de Setembro',
       detail: { title: 'Atentados de 11 de Setembro (2001)', body: 'Os ataques nos EUA introduzem a segurança como variável central da cooperação para o desenvolvimento. Afeganistão e Iraque passam a receber volumes extraordinários de APD por razões estratégicas. Gera ambiguidade sobre os objetivos reais da cooperação e inflaciona as estatísticas de APD.', tipo: 'Conjuntura' } },
     { id: 'e18', group: 2, start: '2002-03-18', content: 'Consenso de Monterrey',
-      detail: { title: 'Conferência de Monterrey e Consenso de Monterrey (2002)', body: 'Primeira grande conferência da ONU sobre financiamento do desenvolvimento. Os países ricos comprometem-se a aumentar a APD, reformar o comércio e promover o investimento privado. Na prática, os compromissos foram amplamente descumpridos.', tipo: 'Conjuntura' } },
+      detail: { title: 'Conferência de Monterrey e Consenso de Monterrey (2002)', body: 'Primeira grande conferência da ONU sobre financiamento do desenvolvimento. Os países ricos comprometem-se a aumentar a APD, reformar o comércio e promover o investimento privado. Portugal compromete-se a atingir 0,33% do RNB em APD até 2006. Na prática, os compromissos foram amplamente descumpridos.', tipo: 'Conjuntura' } },
     { id: 'e19', group: 2, start: '2003-02-25', content: 'Declaração de Roma',
-      detail: { title: 'Declaração de Roma sobre Harmonização (2003)', body: 'Os principais doadores comprometem-se a harmonizar procedimentos, usar os sistemas nacionais dos países receptores e reduzir os custos de transação da ajuda fragmentada. Antecipa a Declaração de Paris (2005) sobre eficácia da ajuda.', tipo: 'Conjuntura' } },
-    { id: 'e20', group: 2, start: '2005-03-02', content: 'Declaração de Paris',
-      detail: { title: 'Declaração de Paris sobre Eficácia da Ajuda (2005)', body: 'Assinada em 2 de março de 2005, a Declaração de Paris estabelece cinco princípios operacionais: ownership, alinhamento, harmonização, gestão por resultados e responsabilidade mútua. Inclui 12 indicadores e metas mensuráveis para 2010 (OCDE, 2005).', tipo: 'Conjuntura' } },
-    { id: 'e21', group: 2, start: '2008-09-02', content: 'Agenda de Acra',
-      detail: { title: 'Agenda de Acra para a Acção (2008)', body: 'O Programa de Ação de Acra aprofunda a Declaração de Paris com maior participação dos países em desenvolvimento e da sociedade civil. Reforça o princípio da transparência e da previsibilidade dos fluxos de APD (OCDE/CAD, 2008).', tipo: 'Conjuntura' } },
-    { id: 'e22', group: 2, start: '2008-09-15', content: 'Crise Financeira Global',
-      detail: { title: 'Crise Financeira Global (2008)', body: 'A falência do Lehman Brothers desencadeia a maior crise financeira desde 1929. Os fluxos de APD contraem-se nos anos seguintes à medida que os países doadores enfrentam pressões orçamentais internas.', tipo: 'Conjuntura' } },
-    { id: 'e23', group: 2, start: '2011-11-29', content: 'Parceria de Busan',
-      detail: { title: 'Parceria de Busan para uma Cooperação para o Desenvolvimento Eficaz (2011)', body: 'Adotada no 4º Fórum de Alto Nível sobre Eficácia da Ajuda, a Parceria de Busan formaliza a transição de aid effectiveness para development effectiveness e cria a GPEDC, incorporando doadores emergentes, setor privado e sociedade civil (OCDE, 2011).', tipo: 'Conjuntura' } },
-    { id: 'e24', group: 2, start: '2015-09-25', content: 'Agenda 2030 / ODS',
-      detail: { title: 'Agenda 2030 para o Desenvolvimento Sustentável e ODS (2015)', body: 'Aprovada pela Assembleia Geral da ONU em 25 de setembro de 2015, a Agenda 2030 estabelece 17 ODS e 169 metas, com prazo até 2030. Os ODS substituem os 8 ODM e aplicam-se universalmente a todos os países (ONU, Resolução 70/1, 2015).', tipo: 'Conjuntura' } },
-    { id: 'e25', group: 2, start: '2015-12-12', content: 'Acordo de Paris (clima)',
-      detail: { title: 'Acordo de Paris sobre Mudanças Climáticas (2015)', body: 'Adotado na COP21, o Acordo de Paris compromete 196 partes a limitar o aquecimento global a 1,5–2 °C e a mobilizar 100 biliões de dólares por ano em financiamento climático para países em desenvolvimento. Vincula diretamente a agenda climática ao ODS 13.', tipo: 'Conjuntura' } },
-    { id: 'e26', group: 2, start: '2020-03-11', content: 'Pandemia de COVID-19',
-      detail: { title: 'Pandemia de COVID-19 (2020)', body: 'A declaração de pandemia pela OMS interrompeu trajetórias de progresso nos ODS, com retrocessos documentados nos ODS 2 (fome), 3 (saúde), 8 (trabalho) e 16 (paz e justiça). A heterogeneidade dos impactos reforça que o cumprimento da Agenda 2030 depende fortemente de contextos locais (Pereira; D\'Agostini; Alonso, 2026).', tipo: 'Conjuntura' } }
+      detail: { title: 'Declaração de Roma sobre Harmonização (2003)', body: 'Os principais doadores comprometem-se a harmonizar procedimentos, usar os sistemas nacionais dos países receptores e reduzir os custos de transação da ajuda fragmentada. Antecipa a Declaração de Paris (2005) sobre eficácia da ajuda.', tipo: 'Conjuntura' } }
   ];
 
-  const DECADES = [1950,1960,1970,1980,1990,2000,2010,2020,2030].map(year => ({
-    id: `dec${year}`,
-    start: `${year}-01-01`,
-    end:   `${year}-01-14`,
-    type:  'background',
-    content: '',
-    style: 'background: rgba(184,169,138,0.055); border-left: 1px solid rgba(140,120,90,0.11);'
+  const allItems = [...PHASES, ...EVENTS].map(item => ({
+    ...item,
+    type: PHASES.includes(item) ? 'range' : 'point',
+    title: item.detail.title,
+    style: PHASES.includes(item)
+      ? `background-color:${item.color.background};border-color:${item.color.border};color:${item.color.border};font-weight:600;`
+      : 'background-color:#c8b89a;border-color:#7a6a50;color:#3a3020;'
   }));
-
-  const allItems = [...PHASES, ...EVENTS, ...DECADES].map(item => {
-    if (item.type === 'background') return item;
-    return {
-      ...item,
-      type:  PHASES.includes(item) ? 'range' : 'point',
-      title: item.detail.title,
-      style: PHASES.includes(item)
-        ? `background-color:${item.color.background};border-color:${item.color.border};color:${item.color.border};font-weight:600;`
-        : 'background-color:#c8b89a;border-color:#7a6a50;color:#3a3020;'
-    };
-  });
 
   const items = new vis.DataSet(allItems);
 
   const container = document.getElementById('timeline');
   const options = {
     start: '1942-01-01',
-    end:   '2031-01-01',
+    end:   '2006-01-01',
     min:   '1940-01-01',
-    max:   '2033-01-01',
+    max:   '2008-01-01',
     height: '540px',
     groupOrder: 'id',
     orientation: { axis: 'top' },
-    zoomMin: 1000 * 60 * 60 * 24 * 365 * 2,
-    zoomMax: 1000 * 60 * 60 * 24 * 365 * 92,
+    zoomMin: 1000 * 60 * 60 * 24 * 365 * 2,   // 2 anos
+    zoomMax: 1000 * 60 * 60 * 24 * 365 * 70,   // 70 anos
     tooltip: { followMouse: false, overflowMethod: 'cap' },
     locale: 'pt',
     showCurrentTime: false,
     stack: true,
     selectable: true,
-    moveable: !isMobile,   /* em mobile, desativa arraste interno para o CSS scroll funcionar */
-    zoomable: !isMobile,   /* em mobile, desativa zoom interno pelo mesmo motivo */
+    moveable: true,
+    zoomable: true,
+    horizontalScroll: true,
   };
 
   const timeline = new vis.Timeline(container, items, groups, options);
 
-  /* tooltip ao selecionar */
+  /* tooltip on select */
   const tip = document.getElementById('tl-tooltip');
 
   timeline.on('select', function(props) {
     if (!props.items.length) { tip.classList.remove('show'); return; }
     const id = props.items[0];
     const item = allItems.find(i => i.id === id);
-    if (!item || item.type === 'background') return;
+    if (!item) return;
+
     const d = item.detail;
     tip.innerHTML = `<strong>${d.title}</strong>${d.body}<br><em>${d.tipo}</em>`;
     tip.classList.add('show');
+
+    /* position near the click but inside the wrap */
+    const wrap = document.getElementById('tl-wrap');
+    const wRect = wrap.getBoundingClientRect();
+    const cRect = container.getBoundingClientRect();
+    const relTop = cRect.top - wRect.top + 60;
+    const relLeft = Math.min(cRect.width / 2 - 10, cRect.width - 320);
+    tip.style.top  = relTop  + 'px';
+    tip.style.left = Math.max(0, relLeft) + 'px';
   });
 
+  /* hide tooltip on click outside */
   container.addEventListener('click', function(e) {
     if (!e.target.closest('.vis-item')) {
       tip.classList.remove('show');
       timeline.setSelection([]);
-      return;
     }
-    const tipW = 300;
-    const tipH = tip.offsetHeight || 150;
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    let left = e.clientX + 12;
-    let top  = e.clientY + 12;
-    if (left + tipW > vw - 10) left = e.clientX - tipW - 12;
-    if (top  + tipH > vh - 10) top  = e.clientY - tipH - 12;
-    tip.style.position = 'fixed';
-    tip.style.left = Math.max(8, left) + 'px';
-  tip.style.top  = Math.max(8, top)  + 'px';
-  });
-
-  if (isMobile) {
-    const overlay = document.getElementById('tl-overlay');
-    const wrap    = document.getElementById('tl-wrap');
-    let startX, startScrollLeft;
-
-    overlay.addEventListener('touchstart', function(e) {
-      startX          = e.touches[0].clientX;
-      startScrollLeft = wrap.scrollLeft;
-    }, { passive: true });
-
-    overlay.addEventListener('touchmove', function(e) {
-      const dx = startX - e.touches[0].clientX;
-      wrap.scrollLeft = startScrollLeft + dx;
-      e.preventDefault();
-    }, { passive: false });
-
-    overlay.addEventListener('click', function(e) {
-      overlay.style.pointerEvents = 'none';
-      const el = document.elementFromPoint(e.clientX, e.clientY);
-      if (el) el.click();
-      setTimeout(() => { overlay.style.pointerEvents = ''; }, 100);
-    });
-  }
-} // fecha initTimeline
-</script>
-
-<div id="cite-overlay" onclick="closeCite()"></div>
-<div id="cite-panel" role="dialog" aria-modal="true" aria-label="Citar material">
-  <div class="cite-panel-header">
-    <span class="cite-panel-title">Citar material</span>
-    <button class="cite-close" onclick="closeCite()" aria-label="Fechar">✕</button>
-  </div>
-
-  <div class="cite-format-label">APA / CFF</div>
-  <div class="cite-text-box" id="cite-apa">
-    Aguiar, Larissa Diniz. (2026). <em>Fases da Cooperação para o Desenvolvimento</em> [Computer software]. https://github.com/aguiarcodes/fases-cooperacao
-  </div>
-  <div class="cite-actions">
-    <button class="cite-copy-btn" onclick="copyCite('apa', this)">Copiar</button>
-  </div>
-
-  <div class="cite-format-label" style="margin-top:0.8rem">ABNT</div>
-  <div class="cite-text-box" id="cite-abnt">
-    AGUIAR, Larissa Diniz. <strong>Fases da Cooperação para o Desenvolvimento</strong>. 2026. Software. Disponível em: https://github.com/aguiarcodes/fases-cooperacao
-  </div>
-  <div class="cite-actions">
-    <button class="cite-copy-btn" onclick="copyCite('abnt', this)">Copiar</button>
-  </div>
-</div>
-
-<script>
-function openCite() {
-  document.getElementById('cite-overlay').classList.add('show');
-  document.getElementById('cite-panel').classList.add('show');
-}
-function closeCite() {
-  document.getElementById('cite-overlay').classList.remove('show');
-  document.getElementById('cite-panel').classList.remove('show');
-}
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCite(); });
-
-const CITE_TEXT = {
-  apa:  'Aguiar, Larissa Diniz. (2026). Fases da Cooperação para o Desenvolvimento [Computer software]. https://github.com/aguiarcodes/fases-cooperacao',
-  abnt: 'AGUIAR, Larissa Diniz. Fases da Cooperação para o Desenvolvimento. 2026. Software. Disponível em: https://github.com/aguiarcodes/fases-cooperacao'
-};
-function copyCite(format, btn) {
-  navigator.clipboard.writeText(CITE_TEXT[format]).then(() => {
-    btn.textContent = 'Copiado ✓';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
   });
 }
 </script>
+
 </body>
 </html>
