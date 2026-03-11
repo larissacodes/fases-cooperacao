@@ -458,30 +458,22 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 .cite-copy-btn:hover { background: #3a3228; }
 .cite-copy-btn.copied { background: var(--a3); }
 
-/* scroll horizontal mobile */
+/* scroll horizontal mobile - QUADRO ANALÍTICO apenas */
 #view-table {
   overflow-x: auto;
 }
+
+/* timeline wrapper - SEM overflow, vis-timeline cuida do pan/zoom nativamente */
 #tl-wrap {
-  overflow-x: auto;
+  position: relative;
+  touch-action: none; /* deixa vis-timeline controlar o touch */
 }
 
 /* responsivo */
 @media (max-width: 900px) {
   .page-header h2 { font-size: 1.3rem; }
   .view { padding-top: calc(var(--nav-h) + 4.5rem); }
-  #timeline { min-width: 900px; }
-  #tl-wrap { position: relative; }
-  #tl-overlay {
-    display: block;
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 540px;
-    z-index: 50;
-    background: transparent;
-  }
 }
-#tl-overlay { display: none; }
 </style>
 </head>
 <body>
@@ -503,7 +495,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
     <div class="header-links">
       <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank">LinkedIn</a>
       <a href="http://lattes.cnpq.br/9454344975691413" target="_blank">Lattes</a>
-      <button class="cite-btn" onclick="openCite()">↳ Citar material</button>
+      <button class="cite-btn" onclick="openCite()">Citar material</button>
     </div>
     <h2>FASES DA COOPERAÇÃO PARA O DESENVOLVIMENTO</h2>
     <div class="header-sub">Quadro analítico comparativo · 1945–2030</div>
@@ -871,7 +863,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
     <div class="header-links">
       <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank">LinkedIn</a>
       <a href="http://lattes.cnpq.br/9454344975691413" target="_blank">Lattes</a>
-      <button class="cite-btn" onclick="openCite()">↳ Citar material</button>
+      <button class="cite-btn" onclick="openCite()">Citar material</button>
     </div>
     <h2>LINHA DO TEMPO INTERATIVA</h2>
     <div class="header-sub">Fases da cooperação (barras) e conjunturas críticas (eventos pontuais) &bull; Arraste para navegar &bull; Scroll para zoom &bull; Toque nos itens para detalhes</div>
@@ -879,7 +871,6 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
   <hr class="divider">
   <div id="tl-wrap">
     <div id="timeline"></div>
-    <div id="tl-overlay"></div>
     <div id="tl-tooltip"></div>
   </div>
 
@@ -912,11 +903,6 @@ function switchView(v) {
 /* inicialização da linha do tempo */
 function initTimeline() {
   window._tlInit = true;
-
-  const isMobile = window.innerWidth <= 900;
-  if (isMobile) {
-    document.getElementById('timeline').style.minWidth = '900px';
-  }
 
   const groups = new vis.DataSet([
     { id: 1, content: 'Fases' },
@@ -1022,9 +1008,9 @@ function initTimeline() {
   ];
 
   const DECADES = [1950,1960,1970,1980,1990,2000,2010,2020,2030].map(year => ({
-    id: `dec${year}`,
-    start: `${year}-01-01`,
-    end:   `${year}-01-14`,
+    id: 'dec' + year,
+    start: year + '-01-01',
+    end:   year + '-01-14',
     type:  'background',
     content: '',
     style: 'background: rgba(184,169,138,0.055); border-left: 1px solid rgba(140,120,90,0.11);'
@@ -1037,7 +1023,7 @@ function initTimeline() {
       type:  PHASES.includes(item) ? 'range' : 'point',
       title: item.detail.title,
       style: PHASES.includes(item)
-        ? `background-color:${item.color.background};border-color:${item.color.border};color:${item.color.border};font-weight:600;`
+        ? 'background-color:' + item.color.background + ';border-color:' + item.color.border + ';color:' + item.color.border + ';font-weight:600;'
         : 'background-color:#c8b89a;border-color:#7a6a50;color:#3a3020;'
     };
   });
@@ -1071,11 +1057,11 @@ function initTimeline() {
 
   timeline.on('select', function(props) {
     if (!props.items.length) { tip.classList.remove('show'); return; }
-    const id = props.items[0];
-    const item = allItems.find(i => i.id === id);
+    var id = props.items[0];
+    var item = allItems.find(function(i) { return i.id === id; });
     if (!item || item.type === 'background') return;
-    const d = item.detail;
-    tip.innerHTML = `<strong>${d.title}</strong>${d.body}<br><em>${d.tipo}</em>`;
+    var d = item.detail;
+    tip.innerHTML = '<strong>' + d.title + '</strong>' + d.body + '<br><em>' + d.tipo + '</em>';
     tip.classList.add('show');
   });
 
@@ -1085,12 +1071,12 @@ function initTimeline() {
       timeline.setSelection([]);
       return;
     }
-    const tipW = 300;
-    const tipH = tip.offsetHeight || 150;
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    let left = e.clientX + 12;
-    let top  = e.clientY + 12;
+    var tipW = 300;
+    var tipH = tip.offsetHeight || 150;
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var left = e.clientX + 12;
+    var top  = e.clientY + 12;
     if (left + tipW > vw - 10) left = e.clientX - tipW - 12;
     if (top  + tipH > vh - 10) top  = e.clientY - tipH - 12;
     tip.style.position = 'fixed';
@@ -1098,29 +1084,14 @@ function initTimeline() {
     tip.style.top  = Math.max(8, top)  + 'px';
   });
 
-  if (isMobile) {
-    const overlay = document.getElementById('tl-overlay');
-    const wrap    = document.getElementById('tl-wrap');
-    let startX, startScrollLeft;
+  /* fechar tooltip ao tocar fora */
+  document.addEventListener('touchstart', function(e) {
+    if (!e.target.closest('.vis-item') && !e.target.closest('#tl-tooltip')) {
+      tip.classList.remove('show');
+      timeline.setSelection([]);
+    }
+  }, { passive: true });
 
-    overlay.addEventListener('touchstart', function(e) {
-      startX          = e.touches[0].clientX;
-      startScrollLeft = wrap.scrollLeft;
-    }, { passive: true });
-
-    overlay.addEventListener('touchmove', function(e) {
-      const dx = startX - e.touches[0].clientX;
-      wrap.scrollLeft = startScrollLeft + dx;
-      e.preventDefault();
-    }, { passive: false });
-
-    overlay.addEventListener('click', function(e) {
-      overlay.style.pointerEvents = 'none';
-      const el = document.elementFromPoint(e.clientX, e.clientY);
-      if (el) el.click();
-      setTimeout(() => { overlay.style.pointerEvents = ''; }, 150);
-    });
-  }
 } // fecha initTimeline
 </script>
 
@@ -1157,17 +1128,17 @@ function closeCite() {
   document.getElementById('cite-overlay').classList.remove('show');
   document.getElementById('cite-panel').classList.remove('show');
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCite(); });
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeCite(); });
 
-const CITE_TEXT = {
+var CITE_TEXT = {
   apa:  'Aguiar, Larissa Diniz. (2026). Fases da Cooperação para o Desenvolvimento [Computer software]. https://github.com/aguiarcodes/fases-cooperacao',
   abnt: 'AGUIAR, Larissa Diniz. Fases da Cooperação para o Desenvolvimento. 2026. Software. Disponível em: https://github.com/aguiarcodes/fases-cooperacao'
 };
 function copyCite(format, btn) {
-  navigator.clipboard.writeText(CITE_TEXT[format]).then(() => {
+  navigator.clipboard.writeText(CITE_TEXT[format]).then(function() {
     btn.textContent = 'Copiado ✓';
     btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
+    setTimeout(function() { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
   });
 }
 </script>
