@@ -2,7 +2,7 @@
 
 Material de aula interativo sobre as fases históricas da cooperação para o desenvolvimento (1945–2030), com quadro analítico comparativo e linha do tempo navegável.
 
-🔗 **[Acessar o material](https://aguiarcodes.github.io/fases-cooperacao/)**
+🔗 **[Acessar o material](https://larissacodes.github.io/fases-cooperacao/)**
 
 ---
 
