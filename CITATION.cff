@@ -8,8 +8,8 @@ authors:
     affiliation: "Pontifícia Universidade Católica de Minas Gerais (PUC Minas)"
 type: software
 license: CC-BY-NC-4.0
-repository-code: "https://github.com/aguiarcodes/fases-coop"
-url: "https://aguiarcodes.github.io/fases-coop/"
+repository-code: "https://github.com/aguiarcodes/fases-cooperacao"
+url: "https://aguiarcodes.github.io/fases-cooperacao/"
 date-released: "2026-03-09"
 keywords:
   - cooperação para o desenvolvimento
@@ -23,6 +23,6 @@ preferred-citation:
   authors:
     - name: "Aguiar, Larissa Diniz"
   year: 2026
-  repository-code: "https://github.com/aguiarcodes/fases-coop"
-  url: "https://aguiarcodes.github.io/fases-coop/"
+  repository-code: "https://github.com/aguiarcodes/fases-cooperacao"
+  url: "https://aguiarcodes.github.io/fases-cooperacao/"
   license: CC-BY-NC-4.0
