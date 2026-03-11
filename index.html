@@ -99,30 +99,7 @@ body {
   color: var(--ink);
   margin-bottom: 0.3rem;
 }
-.header-links {
-  font-size: 0.72rem;
-  font-weight: 300;
-  color: var(--muted);
-  letter-spacing: 0.06em;
-  margin-bottom: 1.1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-}
-.header-links a {
-  color: var(--muted);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  border: 1px solid var(--rule);
-  border-radius: 2px;
-  padding: 0.18rem 0.55rem;
-  transition: background 0.18s, color 0.18s, border-color 0.18s;
-}
-.header-links a:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+/* header-links replaced by .header-btns */
 .page-header h2 {
   font-family: 'Playfair Display', serif;
   font-size: 1.75rem;
@@ -310,7 +287,8 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 .leg-item { font-size: 0.67rem; color: var(--muted); font-weight: 300; display: flex; align-items: center; gap: 0.25rem; }
 
 /* sobrescritos vis-timeline */
-.vis-timeline { border: none !important; font-family: 'Source Sans 3', sans-serif !important; }
+.vis-timeline { border: none !important; font-family: 'Source Sans 3', sans-serif !important; overflow: hidden !important; }
+.vis-panel.vis-left, .vis-panel.vis-right, .vis-panel.vis-center { overflow: hidden !important; }
 .vis-time-axis .vis-text {
   font-family: 'Source Sans 3', sans-serif !important;
   font-size: 0.7rem !important;
@@ -379,24 +357,36 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 .tl-hint { font-size: 0.7rem; font-style: italic; color: var(--muted); margin-top: 0.6rem; font-weight: 300; }
 
 /* citação */
-.cite-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.28rem;
-  font-family: 'Source Sans 3', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--paper);
-  background: var(--muted);
-  border: 1px solid var(--muted);
-  border-radius: 2px;
-  padding: 0.18rem 0.55rem;
-  cursor: pointer;
-  transition: background 0.18s, color 0.18s, border-color 0.18s;
+.header-btns {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.65rem;
+  flex-wrap: wrap;
 }
-.cite-btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.btn-header {
+  display: inline-block;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.32rem 0.9rem;
+  border-radius: 3px;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: opacity 0.2s;
+  line-height: 1.5;
+}
+.btn-header:hover { opacity: 0.72; }
+.btn-header-dark {
+  background: #3a3020;
+  color: var(--paper);
+  border-color: #3a3020;
+}
 
 #cite-overlay {
   position: fixed; inset: 0; z-index: 1090;
@@ -464,6 +454,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 
 #timeline {
   min-width: 900px;
+  overflow: hidden;
 }
 
 /* responsivo */
@@ -489,10 +480,10 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 <div id="view-table" class="view active">
   <div class="page-header">
     <div class="header-eyebrow">Material de Aula produzido por Larissa Diniz Aguiar</div>
-    <div class="header-links">
-      <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank">LinkedIn</a>
-      <a href="http://lattes.cnpq.br/9454344975691413" target="_blank">Lattes</a>
-      <button class="cite-btn" onclick="openCite()">↳ Citar material</button>
+    <div class="header-btns">
+      <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank" class="btn-header">LinkedIn</a>
+      <a href="http://lattes.cnpq.br/9454344975691413" target="_blank" class="btn-header">Lattes</a>
+      <button class="btn-header btn-header-dark" onclick="openCite()">Como Citar</button>
     </div>
     <h2>FASES DA COOPERAÇÃO PARA O DESENVOLVIMENTO</h2>
     <div class="header-sub">Quadro analítico comparativo · 1945–2030</div>
@@ -857,10 +848,10 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 <div id="view-timeline" class="view">
   <div class="page-header">
     <div class="header-eyebrow">Material de Aula produzido por Larissa Diniz Aguiar</div>
-    <div class="header-links">
-      <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank">LinkedIn</a>
-      <a href="http://lattes.cnpq.br/9454344975691413" target="_blank">Lattes</a>
-      <button class="cite-btn" onclick="openCite()">↳ Citar material</button>
+    <div class="header-btns">
+      <a href="https://www.linkedin.com/in/larissadinizaguiar" target="_blank" class="btn-header">LinkedIn</a>
+      <a href="http://lattes.cnpq.br/9454344975691413" target="_blank" class="btn-header">Lattes</a>
+      <button class="btn-header btn-header-dark" onclick="openCite()">Como Citar</button>
     </div>
     <h2>LINHA DO TEMPO INTERATIVA</h2>
     <div class="header-sub">Fases da cooperação (barras) e conjunturas críticas (eventos pontuais) &bull; Arraste para navegar &bull; Scroll para zoom &bull; Toque nos itens para detalhes</div>
