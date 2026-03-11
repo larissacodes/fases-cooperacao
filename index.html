@@ -1043,14 +1043,14 @@ function initTimeline() {
     groupOrder: 'id',
     orientation: { axis: 'top' },
     zoomMin: 1000 * 60 * 60 * 24 * 365 * 2,
-    zoomMax: 1000 * 60 * 60 * 24 * 365 * 30,
+    zoomMax: 1000 * 60 * 60 * 24 * 365 * 60,
     tooltip: { followMouse: false, overflowMethod: 'cap' },
     locale: 'pt',
     showCurrentTime: false,
     stack: true,
     selectable: true,
-    moveable: true,
-    zoomable: true,
+    moveable: !isMobile,
+    zoomable: !isMobile,
   };
 
   const timeline = new vis.Timeline(container, items, groups, options);
