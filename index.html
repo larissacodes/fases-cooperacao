@@ -365,21 +365,23 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
   flex-wrap: wrap;
 }
 .btn-header {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: 'Source Sans 3', sans-serif;
-  font-size: 0.68rem;
+  font-size: 0.64rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
-  padding: 0.32rem 0.9rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 3px;
   border: 1px solid var(--rule);
   background: transparent;
   color: var(--muted);
   cursor: pointer;
   transition: opacity 0.2s;
-  line-height: 1.5;
+  line-height: 1;
 }
 .btn-header:hover { opacity: 0.72; }
 .btn-header-dark {
@@ -450,11 +452,28 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
 
 /* scroll horizontal */
 #view-table { overflow-x: auto; }
-#tl-wrap { overflow-x: auto; }
+#tl-wrap {
+  overflow-x: auto;
+  position: relative;
+}
 
 #timeline {
   min-width: 900px;
   overflow: hidden;
+}
+
+/* overlay transparente que captura toques no mobile ANTES da vis-timeline */
+#tl-touch-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  touch-action: pan-x;
+}
+
+@media (max-width: 900px) {
+  #tl-touch-overlay { display: block; }
+  #timeline { width: 2200px; }
 }
 
 /* responsivo */
@@ -859,6 +878,7 @@ ul.cl li::before { content: '–'; position: absolute; left: 0; color: var(--rul
   <hr class="divider">
   <div id="tl-wrap">
     <div id="timeline"></div>
+    <div id="tl-touch-overlay"></div>
     <div id="tl-tooltip"></div>
   </div>
 
@@ -1034,8 +1054,8 @@ function initTimeline() {
     showCurrentTime: false,
     stack: true,
     selectable: true,
-    moveable: true,
-    zoomable: true,
+    moveable: window.innerWidth > 900,
+    zoomable:  window.innerWidth > 900,
   };
 
   const timeline = new vis.Timeline(container, items, groups, options);
@@ -1052,6 +1072,35 @@ function initTimeline() {
     tip.innerHTML = `<strong>${d.title}</strong>${d.body}<br><em>${d.tipo}</em>`;
     tip.classList.add('show');
   });
+
+  /* ── scroll mobile via overlay ── */
+  (function() {
+    var overlay = document.getElementById('tl-touch-overlay');
+    var wrap    = document.getElementById('tl-wrap');
+    var startX, startLeft;
+
+    overlay.addEventListener('touchstart', function(e) {
+      startX    = e.touches[0].clientX;
+      startLeft = wrap.scrollLeft;
+    }, { passive: true });
+
+    overlay.addEventListener('touchmove', function(e) {
+      var dx = startX - e.touches[0].clientX;
+      wrap.scrollLeft = startLeft + dx;
+    }, { passive: true });
+
+    /* toque curto = clique: repassa o evento para a timeline */
+    var touchMoved = false;
+    overlay.addEventListener('touchstart',  function() { touchMoved = false; }, { passive: true });
+    overlay.addEventListener('touchmove',   function() { touchMoved = true;  }, { passive: true });
+    overlay.addEventListener('touchend', function(e) {
+      if (!touchMoved) {
+        var touch = e.changedTouches[0];
+        var el = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (el && el.closest('.vis-item')) el.click();
+      }
+    });
+  })();
 
   container.addEventListener('click', function(e) {
     if (!e.target.closest('.vis-item')) {
